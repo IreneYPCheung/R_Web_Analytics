@@ -1,0 +1,128 @@
+---
+title: "Store Data Example"
+author: "Irene Cheung"
+date: "4/22/2017"
+output: html_document
+---
+```{r}
+store.df <- read.csv("rintro-chapter3.csv") 
+head(store.df, n=3)
+```
+# frequency by values (one way) table(store.df$p1price)
+```{r}
+str(store.df)
+summary(store.df)
+table(store.df$p1price)
+p1.table <- table(store.df$p1price) 
+#
+p1.table
+str(p1.table)
+#
+plot(p1.table)
+
+```
+# frequency by values (two ways)
+```{r}
+table(store.df$p1price, store.df$p1prom)
+p1.table2 <- table(store.df$p1price, store.df$p1prom)
+p1.table2 
+p1.table2[, 2]
+(p1.table2[, 1] + p1.table2[, 2])
+p1.table2[, 2] / (p1.table2[, 1] + p1.table2[, 2])
+```
+# Functions to Generate Descriptive Statistics
+```{r}
+store.df <- read.csv("rintro-chapter3.csv") 
+summary(store.df)
+min(store.df$p1sales,na.rm=TRUE) 
+max(store.df$p2sales,na.rm=TRUE)
+mean(store.df$p1prom,na.rm=TRUE) 
+median(store.df$p2sales,na.rm=TRUE)
+var(store.df$p1sales,na.rm=TRUE) 
+sd(store.df$p1sales,na.rm=TRUE) 
+#The interquartile range of an observation variable is the difference of its upper and lower quartiles.
+IQR(store.df$p1sales,na.rm = TRUE) 
+#Median Absolute Deviation
+mad(store.df$p1sales,na.rm=TRUE)
+
+```
+#
+```{r}
+# interquartile range
+quantile(store.df$p1sales,na.rm=TRUE, probs=c(0.25,0.50,0.75))
+# central 90% quantile
+quantile(store.df$p1sales,na.rm=TRUE, probs=c(0.05, 0.95)) 
+quantile(store.df$p1sales, na.rm=TRUE,probs=0:10/10)
+```
+## Build a summary
+```{r}
+mysummary.df <- data.frame(matrix(NA, nrow=2, ncol=2)) 
+names(mysummary.df) <- c("Median Sales", "IQR") 
+rownames(mysummary.df) <- c("Product 1", "Product 2") 
+mysummary.df["Product 1", "Median Sales"] <- median(store.df$p1sales,na.rm=TRUE) 
+mysummary.df["Product 2", "Median Sales"] <- median(store.df$p2sales,na.rm=TRUE) 
+mysummary.df["Product 1", "IQR"] <- IQR(store.df$p1sales,na.rm=TRUE) 
+mysummary.df["Product 2", "IQR"] <- IQR(store.df$p2sales,na.rm=TRUE) 
+mysummary.df
+```
+## Descriptive summaries 
+```{r}
+summary(store.df) 
+summary(store.df$Year) 
+#2 decimal place 
+summary(store.df, digits=2)
+```
+#psych Package
+```{r}
+#install.packages("psych") 
+library(psych)
+describe(store.df)
+describe(store.df[ , c(2, 4:9)])
+```
+#apply()
+```{r}
+apply(store.df[, 2:9],na.rm=TRUE, MARGIN=2, FUN=mean) 
+
+apply(store.df[, 2:9],na.rm=TRUE, 1, mean)
+apply(store.df[, 2:9],na.rm=TRUE, 2, sum)
+apply(store.df[, 2:9],na.rm=TRUE, 2, sd)
+
+#apply(store.df[, 2:9],na.rm=TRUE, 2, function(x) { mean(x) - median(x) } )
+
+```
+## creating a summary data frame using apply()
+```{r}
+mysummary2.df <- data.frame(matrix(NA, nrow=2, ncol=2)) 
+names(mysummary2.df) <- c("Median Sales", "IQR")
+rownames(mysummary2.df) <- names(store.df)[4:5] 
+# names from the data frame 
+mysummary2.df[, "Median Sales"] <- apply(store.df[, 4:5], na.rm=TRUE,2, median) 
+mysummary2.df[, "IQR"] <- apply(store.df[, 4:5],na.rm=TRUE, 2, IQR)
+mysummary2.df
+```
+#Histogram
+```{r}
+hist(store.df$p1sales)
+```
+## prettier version
+```{r}
+hist(store.df$p1sales,main="Product 1 Weekly Sales Frequencies, All Stores", xlab="Product 1 Sales (Units)",ylab="Count" )
+```
+#
+```{r}
+hist(store.df$p1sales,main="Product 1 Weekly Sales Frequencies, All Stores", xlab="Product 1 Sales (Units)",ylab="Count",breaks=30, col="lightblue")
+```
+#Check for Normality
+```{r}
+### qq check for normality 
+qqnorm(store.df$p1sales) 
+qqline(store.df$p1sales)
+
+```
+#by() and aggregate()
+```{r}
+#by(store.df$p1sales, store.df$storeNum, mean) 
+#by(store.df$p1sales, list(store.df$storeNum, store.df$Year), mean)
+aggregate(store.df$p1sales, by=list(country=store.df$country), sum)
+```
+
