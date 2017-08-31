@@ -19,7 +19,7 @@ MobileMember<-read.csv("MobileMember.csv")
 MobileMember$Birth<-as.numeric(as.character(MobileMember$Birth))
 MobileMember$Age<-2016-MobileMember$Birth
 ```
-##### Online Member
+#### Online Member
 ```{r}
 OnlineMember<-read.csv("OnlineMember.csv")
 OnlineMember$Birth<-as.numeric(as.character(OnlineMember$Birth))
@@ -44,7 +44,7 @@ boxplot(MobileMember$Age, col="grey" , xlab="MobileMemberAge", horizontal=TRUE)
 #Boxplot of OnlineeMemberAge
 boxplot(OnlineMember$Age, col="grey" , xlab="OnlineMemberAge", horizontal=TRUE)
 ```
-#####Testing Group Means by t test, It compares the mean for exactly two sets of data.
+##### Testing Group Means by t test, It compares the mean for exactly two sets of data.
 ```{r}
 t.test(MobileMember$Age, OnlineMember$Age)
 ```
@@ -64,11 +64,11 @@ MobileMember$Gender<-recode(MobileMember$Gender,"'M'=2")
 summary(MobileMember$Gender)
 ```
 Proportions of female in the adopter group (MobileMember.csv) is (14395/14395+15533)*100%~ 48%
-#####Testing Group Means by t test, It compares the mean for two genders in MobileMember dataset.
+Testing Group Means by t test, It compares the mean for two genders in MobileMember dataset.
 ```{r}
 t.test(MobileMember$Gender==1,MobileMember$Gender==2) 
 ```
-We found that t-statistic is -9.3095 with p-value < 2.2e-16. This means that the null hypothesis of no gender difference in adopter group (???MobileMember.csv???) is rejected. The data suggests that the male has higher adopter.
+We found that t-statistic is -9.3095 with p-value < 2.2e-16. This means that the null hypothesis of no gender difference in adopter group (MobileMember.csv) is rejected. The data suggests that the male has higher adopter.
 ```{r}
 # Summary of Online Member Gender
 OnlineMember<-read.csv("OnlineMember.csv")
@@ -164,7 +164,7 @@ t.test(MobileOrder$CRate==1,MobileOrder$CRate==0)
 Ans: t-statistic is 1548.5, with p-value < 2.2e-16. This means that the null hypothesis of no difference of the confirmation rate between mobile & online transaction is rejected.
 The data suggests that confirmation rate of mobile transaction is larger than online transaction.
 #
-UQ5
+Q5
 ```{r}
 OnlineOrder<-read.csv("OnlineOrder1.csv")
 head(OnlineOrder,2)
