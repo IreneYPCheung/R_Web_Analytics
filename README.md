@@ -1,4 +1,4 @@
-# Objective and Learning Outcomes
+## Objective and Learning Outcomes
 
 This session will learn about Big Data Analytics of R with users’ behaviour in online colony, social network and ultimately provide valuable insights into business. 
 
@@ -8,7 +8,7 @@ This session will learn about Big Data Analytics of R with users’ behaviour in
 - Linear Models, reducing data complexity.
 - Segmentation of Classification and Clustering.  
 
-# Assignment
+## Assignment
 - Assignment 1	Data Exploration.
 - Assignment 2	Correlation Analysis.
 - Assignment 3 	Association Analysis.
