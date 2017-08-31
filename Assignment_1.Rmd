@@ -9,7 +9,7 @@ output:
 ---
 ```{r}
 getwd()
-setwd("/Users/irene/Desktop/R")
+setwd("/Users/Desktop/R")
 getwd()
 ```
 Q1
@@ -215,7 +215,7 @@ MobileOrder$OkSeller<-recode(MobileOrder$OkSeller,"'N'=0")
 MobileOrder$OkSeller<-recode(MobileOrder$OkSeller,"'Z'=NA")
 summary(MobileOrder$OkSeller)
 ```
-# There are 885421 OKSeller (~69%) out of total 1285348 mobile channel adopter. 
+#### There are 885421 OKSeller (~69%) out of total 1285348 mobile channel adopter. 
 Certificates of QuickSeller in both Mobile and PC transactions of mobile channel adopter
 ```{r}
 #Recode od Mobile Order with QuickSeller
@@ -226,7 +226,7 @@ MobileOrder$QuickSeller<-recode(MobileOrder$QuickSeller,"'N'=0")
 MobileOrder$QuickSeller<-recode(MobileOrder$QuickSeller,"'Z'=NA")
 summary(MobileOrder$QuickSeller)
 ```
-# There are 628360 QuickSeller (~49%) out of total 1285348 mobile channel adopter. 
+#### There are 628360 QuickSeller (~49%) out of total 1285348 mobile channel adopter. 
 Certificates of BigSeller in both Mobile and PC transactions of mobile channel adopter
 ```{r}
 #Recode od Mobile Order with BigSeller
@@ -236,7 +236,7 @@ MobileOrder$BigSeller<-recode(MobileOrder$BigSeller,"'N'=0")
 MobileOrder$BigSeller<-recode(MobileOrder$BigSeller,"'Z'=NA")
 summary(MobileOrder$BigSeller)
 ```
-# There are 952042 BigSeller (~74%) out of total 1282860 mobile channel adopter. 
+#### There are 952042 BigSeller (~74%) out of total 1282860 mobile channel adopter. 
 
 ```{r}
 #Transaction through mobile
@@ -245,27 +245,27 @@ MobileOrder$Mobile=as.numeric(MobileOrder$Mall=="03"&MobileOrder$AccessRoute=="1
 sum(MobileOrder$Mobile==0)
 sum(MobileOrder$Mobile==1)
 ```
-#For mobile channel adapter, there are 1234555 transactions via PC Channel and 50793 transactions via mobile Channel.
+#### For mobile channel adapter, there are 1234555 transactions via PC Channel and 50793 transactions via mobile Channel.
 #OKSeller Between PC and Mobile transactions
 ```{r}
 OkSellMob <- table(MobileOrder$Mobile, MobileOrder$OkSeller)
 OkSellMob
 ```
-There is 848963 PC transactions on OKSeller and 36458 Mobile transactions on OKSeller.
+#### There is 848963 PC transactions on OKSeller and 36458 Mobile transactions on OKSeller.
 
 #QuickSeller Between PC and Mobile transactions
 ```{r}
 QuickSellMob<- table(MobileOrder$Mobile, MobileOrder$QuickSeller)
 QuickSellMob
 ```
-There is 603256 PC transactions on QuickSeller and 25104 Mobile transactions on QuickSeller.
+#### There is 603256 PC transactions on QuickSeller and 25104 Mobile transactions on QuickSeller.
 
 #BigSeller Between PC and Mobile transactions
 ```{r}
 BigSellMob<- table(MobileOrder$Mobile, MobileOrder$BigSeller)
 BigSellMob
 ```
-There is 913974 PC transactions on BigSeller and 38068 Mobile transactions on BigSeller.
+#### There is 913974 PC transactions on BigSeller and 38068 Mobile transactions on BigSeller.
 
 ```{r}
 MobileOrder<-read.csv("MobileOrder1.csv")
@@ -273,7 +273,7 @@ head(MobileOrder,2)
 str(MobileOrder)
 ```
 
-### Compare the dependence on OKSeller, QuickSeller and BigSeller via Mobile channel with both main and interaction effect in the group of mobile channel adopters.
+#### Compare the dependence on OKSeller, QuickSeller and BigSeller via Mobile channel with both main and interaction effect in the group of mobile channel adopters.
 Testing Mutliple Group Means by ANOVA
 ```{r}
 #For Mobile channel adopters with mobile channel. 
@@ -285,8 +285,8 @@ anova(aov(MobileOrder$ConfirmedPri ~ MobileOrder$OkSeller* MobileOrder$QuickSell
 From above results of ANOVA, Pr(>F) is very close to zero, confirmed price on mobile channel adopter through mobile channel is a significant predictor, except the interaction of OkSeller and  BigSeller, which is not sigificant. Therfore, confirmed price is the best predictor to identify three kinds of certificates (OkSeller,QuickSeller & BigSeller).
 
 
-### Compare the dependence on OKSeller, QuickSeller and BigSeller on PC transactions with both main effect and interaction effect.
-###Testing Mutliple Group Means by ANOVA
+#### Compare the dependence on OKSeller, QuickSeller and BigSeller on PC transactions with both main effect and interaction effect.
+####Testing Mutliple Group Means by ANOVA
 
 ```{r}
 PC.data=subset(MobileOrder, MobileOrder$Mobile=="0")
@@ -296,20 +296,20 @@ anova(aov(MobileOrder$ConfirmedPri ~ MobileOrder$OkSeller* MobileOrder$QuickSell
 ```
 From results of ANOVA, Pr(>F) is very close to zero, confirmed price on mobile adopter is a significant predictor, except the interaction of OkSeller and  BigSeller, which is not sigificant. Therfore, confirmed price is the best predictor to identify three kinds of certificates (OkSeller,QuickSeller & BigSeller).
 
-### Compare the dependence on OKSeller, QuickSeller and BigSeller on Mobile transactions with three different Models.
-###Testing Mutliple Group Means by ANOVA
+#### Compare the dependence on OKSeller, QuickSeller and BigSeller on Mobile transactions with three different Models.
+#### Testing Mutliple Group Means by ANOVA
 ```{r}
 anova(aov(MobileOrder$ConfirmedPri ~ MobileOrder$OkSeller, data=mobile.data),aov(MobileOrder$ConfirmedPri ~ MobileOrder$OkSeller + MobileOrder$QuickSeller, data=mobile.data),aov(MobileOrder$ConfirmedPri ~ MobileOrder$OkSeller + MobileOrder$QuickSeller + MobileOrder$BigSeller, data=mobile.data))
 ```
 Model 2 & 3 which is significantly different in overall fit with Model 1. 
 
-### Compare the dependence on OKSeller, QuickSeller and BigSeller on PC transactions with three different Models.
-###Testing Mutliple Group Means by ANOVA
+#### Compare the dependence on OKSeller, QuickSeller and BigSeller on PC transactions with three different Models.
+#### Testing Mutliple Group Means by ANOVA
 ```{r}
 anova(aov(MobileOrder$ConfirmedPri ~ MobileOrder$OkSeller, data=PC.data),aov(MobileOrder$ConfirmedPri ~ MobileOrder$OkSeller + MobileOrder$QuickSeller, data=PC.data),aov(MobileOrder$ConfirmedPri ~ MobileOrder$OkSeller + MobileOrder$QuickSeller + MobileOrder$BigSeller, data=PC.data))
 ```
 #### Mobile transactions
-# Visualizing Group Confidence Intervals (95%) with Certificate OKSeller in Mobile transactions
+#### Visualizing Group Confidence Intervals (95%) with Certificate OKSeller in Mobile transactions
 ```{r}
 library(multcomp)
 MobileOKplot<-glht(aov(MobileOrder$ConfirmedPri ~ -1+ MobileOrder$OkSeller, data=mobile.data))
@@ -319,7 +319,7 @@ plot(glht(MobileOKplot), xlab="Average Confirmed Price", main="Average Confirmed
 ```
 From the above graph,the dots shows the mean of confirmed price by OKSeller in mobile, and bars reflect the confidence interval 95%. 
 We found that the average order confirmed price of a trickster is higher than not a trickster.
-# Visualizing Group Confidence Intervals (95%) with Certificate QuickSeller in Mobile transactions
+#### Visualizing Group Confidence Intervals (95%) with Certificate QuickSeller in Mobile transactions
 ```{r}
 library(multcomp)
 MobileQuickplot<-glht(aov(MobileOrder$ConfirmedPri ~ -1+ MobileOrder$QuickSeller, data=mobile.data))
@@ -329,7 +329,7 @@ plot(glht(MobileQuickplot), xlab="Average Confirmed Price", main="Average Confir
 ```
 From the above graph,the dots shows the mean of confirmed price by QuickSeller, and bars reflect the confidence interval (95%). 
 We found that the aveage confirmed price of a seller with fast shipping is higher than not a fast.
-# Visualizing Group Confidence Intervals (95%) with Certificate BigSeller in Mobile transactions
+#### Visualizing Group Confidence Intervals (95%) with Certificate BigSeller in Mobile transactions
 ```{r}
 library(multcomp)
 MobileBigplot<-glht(aov(MobileOrder$ConfirmedPri ~ -1+ MobileOrder$BigSeller, data=mobile.data))
@@ -341,7 +341,7 @@ From the above graph,the dots shows the mean of confirmed price by BigSeller, an
 We found that the aveage confirmed price for those sellers have a lot sold products are higher than those sellers which are selling less products through the marketplace.
 
 #### PC transactions
-# Visualizing Group Confidence Intervals (95%) with Certificate OKSeller in PC transactions
+#### Visualizing Group Confidence Intervals (95%) with Certificate OKSeller in PC transactions
 ```{r}
 library(multcomp)
 PCOKplot<-glht(aov(MobileOrder$ConfirmedPri ~ -1+ MobileOrder$OkSeller, data=PC.data))
