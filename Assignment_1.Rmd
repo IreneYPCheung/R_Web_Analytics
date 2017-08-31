@@ -1,0 +1,353 @@
+---
+title: "Assignment 1"
+author: "Irene Cheung"
+date: "4/17/2017"
+output:
+  pdf_document: default
+  html_document: default
+  word_document: default
+---
+```{r}
+getwd()
+setwd("/Users/irene/Desktop/R")
+getwd()
+```
+Q1
+#### Mobile Member
+```{r}
+MobileMember<-read.csv("MobileMember.csv")
+MobileMember$Birth<-as.numeric(as.character(MobileMember$Birth))
+MobileMember$Age<-2016-MobileMember$Birth
+```
+##### Online Member
+```{r}
+OnlineMember<-read.csv("OnlineMember.csv")
+OnlineMember$Birth<-as.numeric(as.character(OnlineMember$Birth))
+OnlineMember$Age<-2016-OnlineMember$Birth
+```
+```{r}
+#summary(MobileMember$Age)
+summary(MobileMember$Age)
+#summary(OnlineMember$Age)
+summary(OnlineMember$Age)
+```
+##### Before applying statistical tes, we first to examine the data and check for skew, discountinuities and outliners.
+##### One way to check for non-normal distribuions is to plot the data with a Boxplot or Histogram.
+```{r}
+#Historgram to check overall ages.
+#Age of OnlineMember
+hist(OnlineMember$Age)
+#Age of MobileMember
+hist(MobileMember$Age) 
+#Boxplot of MobileMemberAge
+boxplot(MobileMember$Age, col="grey" , xlab="MobileMemberAge", horizontal=TRUE)
+#Boxplot of OnlineeMemberAge
+boxplot(OnlineMember$Age, col="grey" , xlab="OnlineMemberAge", horizontal=TRUE)
+```
+#####Testing Group Means by t test, It compares the mean for exactly two sets of data.
+```{r}
+t.test(MobileMember$Age, OnlineMember$Age)
+```
+Ans: t-statistic is -42.525 with p-value < 2.2e-16. This means that the null hypothesis of no difference in age is rejected. 
+The average age of the adopter group from MobileMember.csv is 34.48139, and the average age of the non-adopter group from OnlineMember.csv is 37.46921.The data suggests that the age of mobile memeber is younger than online memeber.
+The 95% confidence interval of the difference in mean age is between -3.125532 and -2.850109. 
+Therefore adopter group and non-adopter group are significantly different in terms of ages.
+Q2
+```{r}
+# Summary of Mobile Member Gender
+MobileMember<-read.csv("MobileMember.csv")
+library(car)
+MobileMember$Gender<-recode(MobileMember$Gender,"'Z'=NA")
+MobileMember$Gender<-recode(MobileMember$Gender,"'F'=1")
+MobileMember$Gender<-recode(MobileMember$Gender,"'M'=2")
+summary(MobileMember$Gender)
+```
+Proportions of female in the adopter group (???MobileMember.csv???) is (14395/14395+15533)*100%~ 48%
+#####Testing Group Means by t test, It compares the mean for two genders in MobileMember dataset.
+```{r}
+t.test(MobileMember$Gender==1,MobileMember$Gender==2) 
+```
+We found that t-statistic is -9.3095 with p-value < 2.2e-16. This means that the null hypothesis of no gender difference in adopter group (???MobileMember.csv???) is rejected. The data suggests that the male has higher adopter.
+```{r}
+# Summary of Online Member Gender
+OnlineMember<-read.csv("OnlineMember.csv")
+library(car)
+OnlineMember$Gender<-recode(OnlineMember$Gender,"'Z'=NA")
+OnlineMember$Gender<-recode(OnlineMember$Gender,"'F'=1")
+OnlineMember$Gender<-recode(OnlineMember$Gender,"'M'=2")
+summary(OnlineMember$Gender)
+```
+Proportions of female in the non-adopter group (???OnlineMember.csv???) is (17426/17426+12388)*100%~58%
+#####Testing Group Means by t test, It compares the mean for two genders in OnlineMember dataset.
+```{r}
+t.test(OnlineMember$Gender==1,OnlineMember$Gender==2) 
+```
+We found that t-statistic is 41.865 with p-value < 2.2e-16. This means that the null hypothesis of no gender difference in non-adopter group (???OnlineMember.csv???)is rejected. The data suggests that the female has higher non-adopter.
+Q3
+##### 
+```{r}
+MobileOrder<-read.csv("MobileOrder.csv")
+MobileOrder$Mobile=0
+MobileOrder$Mobile=as.numeric(MobileOrder$Mall=="03"&MobileOrder$AccessRoute=="1000132495"|MobileOrder$AccessRoute=="1000132496"|MobileOrder$AccessRoute=="100013091", 1)
+sum(MobileOrder$Mobile==0)
+sum(MobileOrder$Mobile==1)
+```
+For mobile channel adopters, there are 1234555 transactions from Online channel and 50793 transactions from Mobile channel.
+#####Testing Group Means by t test, It compares the mean of PC and Mobile transactions regarding OrderPrice
+```{r}
+t.test(MobileOrder$OrderPrice[MobileOrder$Mobile==1],MobileOrder$OrderPrice[MobileOrder$Mobile==0]) 
+```
+Ans: t-statistic is -26.738, with p-value < 2.2e-16. This means that the null hypothesis of no difference of order price in mobile and PC transaction is rejected.
+The average OrderPrice in mobile channel is 25253.90, and the average OrderPrice in PC channel is 33028.35.The data suggests that PC transaction has larger OrderPrice.
+The 95% confidence interval of the difference in mean orderprice is between -8344.354 and -7204.562. 
+Therefore OrderPrice is significantly different through the PC and mobile channel.
+#
+This is consistent with my conjecture since Hard to browse, collect information and make complex interactions via mobile channel. Mainly due to small size of screen in mobile devices. In addition, end users believe that higher risk perception (e.g: secruity) when they are peforming mobile transaction.
+
+```{r}
+OnlineOrder<-read.csv("OnlineOrder1.csv")
+head(OnlineOrder,2)
+MobileOrder<-read.csv("MobileOrder1.csv")
+head(MobileOrder,2)
+
+boxplot(MobileOrder$OrderPrice, col="grey" , xlab="MobileOrderOrderPrice", horizontal=TRUE)
+boxplot(OnlineOrder$OrderPrice, col="grey" , xlab="OnlineOrderOrderPrice", horizontal=TRUE)
+
+```
+
+```{r}
+#Summary of Mobile transactions regarding OrderPrice
+summary(MobileOrder$OrderPrice)
+```
+
+```{r}
+#No.of Mobile transactions regarding amount of OrderPrice is (i) less than 0 (ii) equal 0 (iii) greater than 0
+sum(MobileOrder$OrderPrice<0)
+sum(MobileOrder$OrderPrice==0)
+sum(MobileOrder$OrderPrice>0)
+```
+There are (i) 291 Mobile transactions of OrderPrice is less than 0, (ii) 141 Mobile transactions of OrderPrice is 0; (iii) 1284916 Mobile transactions of OrderPrice is greater than 0.
+```{r}
+#Summary of Online transactions regarding OrderPrice
+summary(OnlineOrder$OrderPrice)
+```
+
+```{r}
+#No.of Online transactions regarding amount of OrderPrice is (i) less than 0 (ii) equal 0 (iii) greater than 0
+sum(OnlineOrder$OrderPrice<0)
+sum(OnlineOrder$OrderPrice==0)
+sum(OnlineOrder$OrderPrice>0)
+```
+There are (i) 189 Online transactions of OrderPrice is less than 0, (ii) 108 Online transactions of OrderPrice is 0; (iii) 1454506 Online transactions of OrderPrice is greater than 0.
+
+Q4
+
+```{r}
+#Confirmation Rate for Mobile transactions
+MobileOrder$CRate=0
+MobileOrder$CRate=as.numeric(MobileOrder$OrderQuantity==MobileOrder$ConfirmedQuan, 1)
+sum(MobileOrder$CRate==0)
+sum(MobileOrder$CRate==1)
+ConfMobileOrder=sum(MobileOrder$CRate==1)/(sum(MobileOrder$CRate==0)+sum(MobileOrder$CRate==1))
+ConfMobileOrder
+ConfPCOrder=sum(MobileOrder$CRate==0)/(sum(MobileOrder$CRate==0)+sum(MobileOrder$CRate==1))
+ConfPCOrder
+```
+The confirmation rate for Mobile transactions are ~85% and PC transactions are ~15%
+###Compare the confiramtion between Online and Mobile by t-test
+```{r}
+t.test(MobileOrder$CRate==1,MobileOrder$CRate==0)
+
+```
+Ans: t-statistic is 1548.5, with p-value < 2.2e-16. This means that the null hypothesis of no difference of the confirmation rate between mobile & online transaction is rejected.
+The data suggests that confirmation rate of mobile transaction is larger than online transaction.
+#
+#Q5
+```{r}
+OnlineOrder<-read.csv("OnlineOrder1.csv")
+head(OnlineOrder,2)
+str(OnlineOrder)
+summary(OnlineOrder)
+MobileOrder<-read.csv("MobileOrder1.csv")
+head(MobileOrder,2)
+str(MobileOrder)
+summary(MobileOrder)
+```
+Certificates of OKSeller on PC transactions of Mobile channel non-adopter
+```{r}
+#Recode od Online Order with OKSeller
+library(car)
+OnlineOrder$OkSeller<-recode(OnlineOrder$OkSeller,"'Y'=1")
+OnlineOrder$OkSeller<-recode(OnlineOrder$OkSeller,"'N'=0")
+OnlineOrder$OkSeller<-recode(OnlineOrder$OkSeller,"'Z'=NA")
+summary(OnlineOrder$OkSeller)
+```
+Certificates of QuickSeller on PC transactions of Mobile channel non-adopter
+```{r}
+#Recode od Online Order with QuickSeller
+library(car)
+OnlineOrder$QuickSeller<-recode(OnlineOrder$QuickSeller,"'Y'=1")
+OnlineOrder$QuickSeller<-recode(OnlineOrder$QuickSeller,"'N'=0")
+OnlineOrder$QuickSeller<-recode(OnlineOrder$QuickSeller,"'Z'=NA")
+summary(OnlineOrder$QuickSeller)
+```
+Certificates of BigSeller on PC transactions of Mobile channel non-adopter
+```{r}
+#Recode od Online Order with BigSeller
+OnlineOrder$BigSeller<-recode(OnlineOrder$BigSeller,"'Y'=1")
+OnlineOrder$BigSeller<-recode(OnlineOrder$BigSeller,"'N'=0")
+OnlineOrder$BigSeller<-recode(OnlineOrder$BigSeller,"'Z'=NA")
+summary(OnlineOrder$BigSeller)
+```
+##
+```{r}
+head(MobileOrder,2)
+str(MobileOrder)
+summary(MobileOrder)
+```
+#
+Certificates of OKSeller in both Mobile and PC transactions of mobile channel adopter
+```{r}
+#Recode od Mobile Order with OKSeller
+library(car)
+MobileOrder$OkSeller<-recode(MobileOrder$OkSeller,"'Y'=1")
+MobileOrder$OkSeller<-recode(MobileOrder$OkSeller,"'N'=0")
+MobileOrder$OkSeller<-recode(MobileOrder$OkSeller,"'Z'=NA")
+summary(MobileOrder$OkSeller)
+```
+# There are 885421 OKSeller (~69%) out of total 1285348 mobile channel adopter. 
+Certificates of QuickSeller in both Mobile and PC transactions of mobile channel adopter
+```{r}
+#Recode od Mobile Order with QuickSeller
+library(car)
+
+MobileOrder$QuickSeller<-recode(MobileOrder$QuickSeller,"'Y'=1")
+MobileOrder$QuickSeller<-recode(MobileOrder$QuickSeller,"'N'=0")
+MobileOrder$QuickSeller<-recode(MobileOrder$QuickSeller,"'Z'=NA")
+summary(MobileOrder$QuickSeller)
+```
+# There are 628360 QuickSeller (~49%) out of total 1285348 mobile channel adopter. 
+Certificates of BigSeller in both Mobile and PC transactions of mobile channel adopter
+```{r}
+#Recode od Mobile Order with BigSeller
+library(car)
+MobileOrder$BigSeller<-recode(MobileOrder$BigSeller,"'Y'=1")
+MobileOrder$BigSeller<-recode(MobileOrder$BigSeller,"'N'=0")
+MobileOrder$BigSeller<-recode(MobileOrder$BigSeller,"'Z'=NA")
+summary(MobileOrder$BigSeller)
+```
+# There are 952042 BigSeller (~74%) out of total 1282860 mobile channel adopter. 
+
+```{r}
+#Transaction through mobile
+MobileOrder$Mobile=0
+MobileOrder$Mobile=as.numeric(MobileOrder$Mall=="03"&MobileOrder$AccessRoute=="1000132495"|MobileOrder$AccessRoute=="1000132496"|MobileOrder$AccessRoute=="100013091", 1)
+sum(MobileOrder$Mobile==0)
+sum(MobileOrder$Mobile==1)
+```
+#For mobile channel adapter, there are 1234555 transactions via PC Channel and 50793 transactions via mobile Channel.
+#OKSeller Between PC and Mobile transactions
+```{r}
+OkSellMob <- table(MobileOrder$Mobile, MobileOrder$OkSeller)
+OkSellMob
+```
+There is 848963 PC transactions on OKSeller and 36458 Mobile transactions on OKSeller.
+
+#QuickSeller Between PC and Mobile transactions
+```{r}
+QuickSellMob<- table(MobileOrder$Mobile, MobileOrder$QuickSeller)
+QuickSellMob
+```
+There is 603256 PC transactions on QuickSeller and 25104 Mobile transactions on QuickSeller.
+
+#BigSeller Between PC and Mobile transactions
+```{r}
+BigSellMob<- table(MobileOrder$Mobile, MobileOrder$BigSeller)
+BigSellMob
+```
+There is 913974 PC transactions on BigSeller and 38068 Mobile transactions on BigSeller.
+
+```{r}
+MobileOrder<-read.csv("MobileOrder1.csv")
+head(MobileOrder,2)
+str(MobileOrder)
+```
+
+### Compare the dependence on OKSeller, QuickSeller and BigSeller via Mobile channel with both main and interaction effect in the group of mobile channel adopters.
+Testing Mutliple Group Means by ANOVA
+```{r}
+#For Mobile channel adopters with mobile channel. 
+mobile.data=subset(MobileOrder, MobileOrder$Mobile=="1")
+head(mobile.data)
+str(mobile.data)
+anova(aov(MobileOrder$ConfirmedPri ~ MobileOrder$OkSeller* MobileOrder$QuickSeller* MobileOrder$BigSeller, data=mobile.data))
+```
+From above results of ANOVA, Pr(>F) is very close to zero, confirmed price on mobile channel adopter through mobile channel is a significant predictor, except the interaction of OkSeller and  BigSeller, which is not sigificant. Therfore, confirmed price is the best predictor to identify three kinds of certificates (OkSeller,QuickSeller & BigSeller).
+
+
+### Compare the dependence on OKSeller, QuickSeller and BigSeller on PC transactions with both main effect and interaction effect.
+###Testing Mutliple Group Means by ANOVA
+
+```{r}
+PC.data=subset(MobileOrder, MobileOrder$Mobile=="0")
+head(PC.data)
+str(PC.data)
+anova(aov(MobileOrder$ConfirmedPri ~ MobileOrder$OkSeller* MobileOrder$QuickSeller* MobileOrder$BigSeller, data=PC.data))
+```
+From results of ANOVA, Pr(>F) is very close to zero, confirmed price on mobile adopter is a significant predictor, except the interaction of OkSeller and  BigSeller, which is not sigificant. Therfore, confirmed price is the best predictor to identify three kinds of certificates (OkSeller,QuickSeller & BigSeller).
+
+### Compare the dependence on OKSeller, QuickSeller and BigSeller on Mobile transactions with three different Models.
+###Testing Mutliple Group Means by ANOVA
+```{r}
+anova(aov(MobileOrder$ConfirmedPri ~ MobileOrder$OkSeller, data=mobile.data),aov(MobileOrder$ConfirmedPri ~ MobileOrder$OkSeller + MobileOrder$QuickSeller, data=mobile.data),aov(MobileOrder$ConfirmedPri ~ MobileOrder$OkSeller + MobileOrder$QuickSeller + MobileOrder$BigSeller, data=mobile.data))
+```
+Model 2 & 3 which is significantly different in overall fit with Model 1. 
+
+### Compare the dependence on OKSeller, QuickSeller and BigSeller on PC transactions with three different Models.
+###Testing Mutliple Group Means by ANOVA
+```{r}
+anova(aov(MobileOrder$ConfirmedPri ~ MobileOrder$OkSeller, data=PC.data),aov(MobileOrder$ConfirmedPri ~ MobileOrder$OkSeller + MobileOrder$QuickSeller, data=PC.data),aov(MobileOrder$ConfirmedPri ~ MobileOrder$OkSeller + MobileOrder$QuickSeller + MobileOrder$BigSeller, data=PC.data))
+```
+#### Mobile transactions
+# Visualizing Group Confidence Intervals (95%) with Certificate OKSeller in Mobile transactions
+```{r}
+library(multcomp)
+MobileOKplot<-glht(aov(MobileOrder$ConfirmedPri ~ -1+ MobileOrder$OkSeller, data=mobile.data))
+glht(MobileOKplot)
+par(mar=c(6,10,2,2))
+plot(glht(MobileOKplot), xlab="Average Confirmed Price", main="Average Confirmed Price (95%CI) by OKSeller in Mobile")
+```
+From the above graph,the dots shows the mean of confirmed price by OKSeller in mobile, and bars reflect the confidence interval 95%. 
+We found that the average order confirmed price of a trickster is higher than not a trickster.
+# Visualizing Group Confidence Intervals (95%) with Certificate QuickSeller in Mobile transactions
+```{r}
+library(multcomp)
+MobileQuickplot<-glht(aov(MobileOrder$ConfirmedPri ~ -1+ MobileOrder$QuickSeller, data=mobile.data))
+glht(MobileQuickplot)
+par(mar=c(6,11,2,2))
+plot(glht(MobileQuickplot), xlab="Average Confirmed Price", main="Average Confirmed Price (95%CI) by QuickSeller in Mobile")
+```
+From the above graph,the dots shows the mean of confirmed price by QuickSeller, and bars reflect the confidence interval (95%). 
+We found that the aveage confirmed price of a seller with fast shipping is higher than not a fast.
+# Visualizing Group Confidence Intervals (95%) with Certificate BigSeller in Mobile transactions
+```{r}
+library(multcomp)
+MobileBigplot<-glht(aov(MobileOrder$ConfirmedPri ~ -1+ MobileOrder$BigSeller, data=mobile.data))
+glht(MobileBigplot)
+par(mar=c(6,11,2,2))
+plot(glht(MobileBigplot), xlab="Averge Confirmed Price", main="Average Confirmed Price (95%CI) by BigSeller in Mobile")
+```
+From the above graph,the dots shows the mean of confirmed price by BigSeller, and bars reflect the confidence interval(95%). 
+We found that the aveage confirmed price for those sellers have a lot sold products are higher than those sellers which are selling less products through the marketplace.
+
+#### PC transactions
+# Visualizing Group Confidence Intervals (95%) with Certificate OKSeller in PC transactions
+```{r}
+library(multcomp)
+PCOKplot<-glht(aov(MobileOrder$ConfirmedPri ~ -1+ MobileOrder$OkSeller, data=PC.data))
+glht(PCOKplot)
+par(mar=c(6,10,2,2))
+plot(glht(PCOKplot), xlab="Average Confirmed Price", main="Average Confirmed Price (95%CI) by OKSeller in PC")
+```
+From the above graph,the dots shows the mean of confirmed price by OKSeller in PC, and bars reflect the confidence interval 95%. 
+We found that the average order confirmed price of a trickster is higher than not a trickster.
