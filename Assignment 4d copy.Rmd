@@ -1,0 +1,538 @@
+---
+title: "Assignment 4"
+author: "Irene Cheung"
+date: "May 27, 2017"
+output:
+  word_document: default
+  pdf_document: default
+  html_document: default
+---
+```{r}
+setwd("/Users/irene/Desktop/R1")
+getwd()
+```
+#
+```{r}
+library(Hmisc)
+injury<-stata.get("INJURY.DTA")
+contents(injury)
+describe(injury)
+head(injury)
+str(injury)
+names(injury)
+summary(injury)
+```
+#######################################
+##### No.of observations in Kentucky
+```{r}
+table.ky=table(injury$ky) 
+table.ky
+```
+###### No.of observations Michigan
+```{r}
+#No.of observations in 
+table.mi=table(injury$mi) 
+table.mi
+```
+###### Generating Kentucky statsitics 
+```{r}
+#Kentucky
+kentucky.data=subset(injury, injury$ky=="1")
+head(kentucky.data, 5)
+summary(kentucky.data)
+str(kentucky.data)
+```
+#
+###### Generating Michigan statsitics 
+```{r}
+#Michigan
+michigan.data=subset(injury, injury$mi=="1")
+head(michigan.data, 5)
+summary(michigan.data)
+str(michigan.data)
+```
+###### Generating Michigan statsitics before change in benefits
+```{r}
+michigan_bechnge <- subset(michigan.data, afchnge=="0")
+head(michigan_bechnge)
+```
+#Generating Michigan statsitics after change in benefits
+```{r}
+michigan_afchnge <- subset(michigan.data, afchnge=="1")
+head(michigan_afchnge)
+summary(michigan_afchnge)
+```
+######Generating Kentucky statsitics before change in benefits
+```{r}
+kentucky_bechnge <- subset(kentucky.data, afchnge=="0")
+head(kentucky_bechnge)
+```
+###### Generating Kentucky statsitics after change in benefits
+```{r}
+kentucky_afchnge <- subset(kentucky.data, afchnge=="1")
+head(kentucky_afchnge)
+summary(kentucky_afchnge)
+```
+###Q1
+####################
+######Testing Group Means by t test, It compares the mean for two sets of data with before after change in benefits in Kentucky
+```{r}
+#Duration of benefits with before & after change in benefits at Kentucky
+t.test(kentucky_bechnge$durat, kentucky_afchnge$durat)
+```
+Ans: t-statistic is -2.1251 with p-value 0.03362. This means that the null hypothesis of no difference in Duration of benefits is rejected. 
+In Kentucky, the average duration of benefits before change in benefits is 8.330071, and the The average duration of benefits after change in benefits is 9.566778.The data suggests that the duration of benefits after change in benefits longer than before change in benefits.
+The 95% confidence interval of the difference in mean duration of benefits
+is between -2.37755016 and -0.09586343. 
+Therefore in Kentucky, before and after change in benefits are significantly different in terms of duration of benefits.
+#
+###### Testing Group Means by t test, It compares the mean for two sets of data with before after change in benefits in Michigan.
+```{r}
+#Duration of benefits with before & after change in benefits at Michigan
+t.test(michigan_bechnge$durat, michigan_afchnge$durat)
+```
+Ans: t-statistic is -2.0099 with p-value 0.04465. This means that the null hypothesis of no difference in Duration of benefits is rejected. 
+In Michigan, the average duration of benefits before change in benefits is 12.06159, and the The average duration of benefits after change in benefits is 15.47055.The data suggests that the duration of benefits after change in benefits longer than before change in benefits.
+The 95% confidence interval of the difference in mean duration of benefits
+is between 6.73626226 and -0.08164129. 
+Therefore in Michigan, before and after change in benefits are significantly different in terms of duration of benefits.
+####
+###Q2
+#############################
+```{r}
+####(I)Kentucky
+#####Before change in benefits
+#duration of benefits @Kentucky with low & high earners.
+library(data.table)
+dtfkent <- data.frame(a=kentucky_bechnge$durat,b=kentucky_bechnge$highearn)
+dtkent <- data.table(dtfkent)
+dtkent[,list(count=sum(a>=0, na.rm=TRUE),mean=mean(a, na.rm=TRUE),sd=sd(a,na.rm=TRUE), max= max(a, na.rm=TRUE),min= min(a, na.rm=TRUE),sum=sum(a, na.rm=TRUE)),by=b]
+```
+#
+```{r}
+#####(II)
+#####Before change in benefits
+#Benefit @Kentucky with low & high earners.
+library(data.table)
+dtfkent <- data.frame(a=kentucky_bechnge$benefit,b=kentucky_bechnge$highearn)
+dtkent <- data.table(dtfkent)
+dtkent[,list(count=sum(a>=0, na.rm=TRUE),mean=mean(a, na.rm=TRUE),sd=sd(a,na.rm=TRUE), max= max(a, na.rm=TRUE),min= min(a, na.rm=TRUE),sum=sum(a, na.rm=TRUE)),by=b]
+```
+
+```{r}
+#####(III)Kentucky
+#####Before change in benefits
+#previous weekly wage @Kentucky with low & high earners.
+library(data.table)
+dtfkent <- data.frame(a=kentucky_bechnge$prewage,b=kentucky_bechnge$highearn)
+dtkent <- data.table(dtfkent)
+dtkent[,list(count=sum(a>=0, na.rm=TRUE),mean=mean(a, na.rm=TRUE),sd=sd(a,na.rm=TRUE), max= max(a, na.rm=TRUE),min= min(a, na.rm=TRUE),sum=sum(a, na.rm=TRUE)),by=b]
+```
+
+```{r}
+####(I)Kentucky
+#####After change in benefits
+#duration of benefits @Kentucky with low & high earners.
+library(data.table)
+dtfkent <- data.frame(a=kentucky_afchnge$durat,b=kentucky_afchnge$highearn)
+dtkent <- data.table(dtfkent)
+dtkent[,list(count=sum(a>=0, na.rm=TRUE),mean=mean(a, na.rm=TRUE),sd=sd(a,na.rm=TRUE), max= max(a, na.rm=TRUE),min= min(a, na.rm=TRUE),sum=sum(a, na.rm=TRUE)),by=b]
+```
+
+```{r}
+#########(II)Kentucky
+#####After change in benefits
+#Benefit @Kentucky with low & high earners.
+library(data.table)
+dtfkent <- data.frame(a=kentucky_afchnge$benefit,b=kentucky_afchnge$highearn)
+dtkent <- data.table(dtfkent)
+dtkent[,list(count=sum(a>=0, na.rm=TRUE),mean=mean(a, na.rm=TRUE),sd=sd(a,na.rm=TRUE), max= max(a, na.rm=TRUE),min= min(a, na.rm=TRUE),sum=sum(a, na.rm=TRUE)),by=b]
+```
+
+```{r}
+#####(III)Kentucky
+#####After change in benefits
+#previous weekly wage @Kentucky with low & high earners.
+library(data.table)
+dtfkent <- data.frame(a=kentucky_afchnge$prewage,b=kentucky_afchnge$highearn)
+dtkent <- data.table(dtfkent)
+dtkent[,list(count=sum(a>=0, na.rm=TRUE),mean=mean(a, na.rm=TRUE),sd=sd(a,na.rm=TRUE), max= max(a, na.rm=TRUE),min= min(a, na.rm=TRUE),sum=sum(a, na.rm=TRUE)),by=b]
+```
+
+###############
+```{r}
+####(I)Michigan
+#####Before change in benefits
+#duration of benefits @Michigan with low & high earners.
+library(data.table)
+dtfkent <- data.frame(a=michigan_bechnge$durat,b=michigan_bechnge$highearn)
+dtkent <- data.table(dtfkent)
+dtkent[,list(count=sum(a>=0, na.rm=TRUE),mean=mean(a, na.rm=TRUE),sd=sd(a,na.rm=TRUE), max= max(a, na.rm=TRUE),min= min(a, na.rm=TRUE),sum=sum(a, na.rm=TRUE)),by=b]
+```
+#
+```{r}
+#####(II)Michigan
+#####Before change in benefits
+#Benefit @Michigan with low & high earners.
+library(data.table)
+dtfkent <- data.frame(a=michigan_bechnge$benefit,b=michigan_bechnge$highearn)
+dtkent <- data.table(dtfkent)
+dtkent[,list(count=sum(a>=0, na.rm=TRUE),mean=mean(a, na.rm=TRUE),sd=sd(a,na.rm=TRUE), max= max(a, na.rm=TRUE),min= min(a, na.rm=TRUE),sum=sum(a, na.rm=TRUE)),by=b]
+```
+#
+```{r}
+#####(III)Michigan
+#####Before change in benefits
+#previous weekly wage @Michigan with low & high earners.
+library(data.table)
+dtfkent <- data.frame(a=michigan_bechnge$prewage,b=michigan_bechnge$highearn)
+dtkent <- data.table(dtfkent)
+dtkent[,list(count=sum(a>=0, na.rm=TRUE),mean=mean(a, na.rm=TRUE),sd=sd(a,na.rm=TRUE), max= max(a, na.rm=TRUE),min= min(a, na.rm=TRUE),sum=sum(a, na.rm=TRUE)),by=b]
+```
+
+```{r}
+####(I)Michigan
+#####After change in benefits
+#duration of benefits @Michigan with low & high earners.
+library(data.table)
+dtfkent <- data.frame(a=michigan_afchnge$durat,b=michigan_afchnge$highearn)
+dtkent <- data.table(dtfkent)
+dtkent[,list(count=sum(a>=0, na.rm=TRUE),mean=mean(a, na.rm=TRUE),sd=sd(a,na.rm=TRUE), max= max(a, na.rm=TRUE),min= min(a, na.rm=TRUE),sum=sum(a, na.rm=TRUE)),by=b]
+```
+
+```{r}
+#########(II)Michigan
+#####After change in benefits
+#Benefit @Michigan with low & high earners.
+library(data.table)
+dtfkent <- data.frame(a=michigan_afchnge$benefit,b=michigan_afchnge$highearn)
+dtkent <- data.table(dtfkent)
+dtkent[,list(count=sum(a>=0, na.rm=TRUE),mean=mean(a, na.rm=TRUE),sd=sd(a,na.rm=TRUE), max= max(a, na.rm=TRUE),min= min(a, na.rm=TRUE),sum=sum(a, na.rm=TRUE)),by=b]
+```
+
+```{r}
+#####(III)Michigan
+#####After change in benefits
+#previous weekly wage @Michigan with low & high earners.
+library(data.table)
+dtfkent <- data.frame(a=michigan_afchnge$prewage,b=michigan_afchnge$highearn)
+dtkent <- data.table(dtfkent)
+dtkent[,list(count=sum(a>=0, na.rm=TRUE),mean=mean(a, na.rm=TRUE),sd=sd(a,na.rm=TRUE), max= max(a, na.rm=TRUE),min= min(a, na.rm=TRUE),sum=sum(a, na.rm=TRUE)),by=b]
+```
+############################
+###Q3
+############################
+###### Generating Kentucky statsitics for high-earners
+```{r}
+kentucky_highearn <- subset(kentucky.data, highearn=="1")
+head(kentucky_highearn)
+```
+
+######Generating Kentucky statsitics for low-earners
+```{r}
+kentucky_lowearn <- subset(kentucky.data, highearn=="0")
+head(kentucky_lowearn)
+```
+######Generating Michigan statsitics for high-earners
+```{r}
+michigan_highearn <- subset(michigan.data,highearn =="1")
+head(michigan_highearn)
+summary(michigan_highearn)
+```
+######Generating Michigan statsitics for low-earners
+```{r}
+michigan_lowearn <- subset(michigan.data,highearn =="0")
+head(michigan_lowearn)
+summary(michigan_lowearn)
+```
+######No.of observations in Kentucky with high & low earners
+```{r}
+table.kentucky_earn=table(kentucky.data$highearn) 
+table.kentucky_earn
+```
+######No.of observations in Michigan with high & low earners
+```{r}
+table.michigan_earn=table(michigan.data$highearn) 
+table.michigan_earn
+```
+
+#
+```{r}
+#########(Ia)Kentucky
+#####Before & after change in benefits
+#duration @Kentucky with high earners.
+library(data.table)
+dtfkentea <- data.frame(a=kentucky_highearn$durat,b=kentucky_highearn$afchnge)
+dtkentea <- data.table(dtfkentea)
+dtkentea[,list(count=sum(a>=0, na.rm=TRUE),mean=mean(a, na.rm=TRUE),sd=sd(a,na.rm=TRUE), max= max(a, na.rm=TRUE),min= min(a, na.rm=TRUE),sum=sum(a, na.rm=TRUE)),by=b]
+```
+#
+```{r}
+#########(Ia)Kentucky
+#####Before & after change in benefits
+#duration @Kentucky with low earners.
+library(data.table)
+dtfkentea <- data.frame(a=kentucky_lowearn$durat,b=kentucky_lowearn$afchnge)
+dtkentea <- data.table(dtfkentea)
+dtkentea[,list(count=sum(a>=0, na.rm=TRUE),mean=mean(a, na.rm=TRUE),sd=sd(a,na.rm=TRUE), max= max(a, na.rm=TRUE),min= min(a, na.rm=TRUE),sum=sum(a, na.rm=TRUE)),by=b]
+```
+
+#
+```{r}
+#########(Ib)Michigan
+#####Before & after change in benefits
+#duration @Michigan with high earners.
+library(data.table)
+dtfmictea <- data.frame(a=michigan_highearn$durat,b=michigan_highearn$afchnge)
+dtmictea <- data.table(dtfmictea)
+dtmictea[,list(count=sum(a>=0, na.rm=TRUE),mean=mean(a, na.rm=TRUE),sd=sd(a,na.rm=TRUE), max= max(a, na.rm=TRUE),min= min(a, na.rm=TRUE),sum=sum(a, na.rm=TRUE)),by=b]
+```
+
+```{r}
+#########(Ib)Michigan
+#####Before & after change in benefits
+#duration @Michigan with low earners.
+library(data.table)
+dtfmictea <- data.frame(a=michigan_lowearn$durat,b=michigan_lowearn$afchnge)
+dtmictea <- data.table(dtfmictea)
+dtmictea[,list(count=sum(a>=0, na.rm=TRUE),mean=mean(a, na.rm=TRUE),sd=sd(a,na.rm=TRUE), max= max(a, na.rm=TRUE),min= min(a, na.rm=TRUE),sum=sum(a, na.rm=TRUE)),by=b]
+```
+#
+```{r}
+#########(IIa)Kentucky
+#####Before & after change in benefits
+#log duration of benefits@Kentucky with high earners.
+library(data.table)
+dtfkentea <- data.frame(a=kentucky_highearn$ldurat,b=kentucky_highearn$afchnge)
+dtkentea <- data.table(dtfkentea)
+dtkentea[,list(count=sum(a>=0, na.rm=TRUE),mean=mean(a, na.rm=TRUE),sd=sd(a,na.rm=TRUE), max= max(a, na.rm=TRUE),min= min(a, na.rm=TRUE),sum=sum(a, na.rm=TRUE)),by=b]
+```
+#
+```{r}
+#########(IIa)Kentucky
+#####Before & after change in benefits
+#log duration of benefits @Kentucky with low earners.
+library(data.table)
+dtfkentea <- data.frame(a=kentucky_lowearn$ldurat,b=kentucky_lowearn$afchnge)
+dtkentea <- data.table(dtfkentea)
+dtkentea[,list(count=sum(a>=0, na.rm=TRUE),mean=mean(a, na.rm=TRUE),sd=sd(a,na.rm=TRUE), max= max(a, na.rm=TRUE),min= min(a, na.rm=TRUE),sum=sum(a, na.rm=TRUE)),by=b]
+```
+
+```{r}
+#########(IIb)Michigan
+#####Before & after change in benefits
+#log duration @Michigan with high earners.
+library(data.table)
+dtfmictea <- data.frame(a=michigan_highearn$ldurat,b=michigan_highearn$afchnge)
+dtmictea <- data.table(dtfmictea)
+dtmictea[,list(count=sum(a>=0, na.rm=TRUE),mean=mean(a, na.rm=TRUE),sd=sd(a,na.rm=TRUE), max= max(a, na.rm=TRUE),min= min(a, na.rm=TRUE),sum=sum(a, na.rm=TRUE)),by=b]
+```
+#
+```{r}
+#########(IIb)Michigan
+#####Before & after change in benefits
+#log duration @Michigan with low earners.
+library(data.table)
+dtfmictea <- data.frame(a=michigan_lowearn$ldurat,b=michigan_lowearn$afchnge)
+dtmictea <- data.table(dtfmictea)
+dtmictea[,list(count=sum(a>=0, na.rm=TRUE),mean=mean(a, na.rm=TRUE),sd=sd(a,na.rm=TRUE), max= max(a, na.rm=TRUE),min= min(a, na.rm=TRUE),sum=sum(a, na.rm=TRUE)),by=b]
+```
+#
+```{r}
+#########(IIIa)Kentucky
+#####Before & after change in benefits
+# total med. costs@Kentucky with high earners.
+library(data.table)
+dtfkentea <- data.frame(a=kentucky_highearn$totmed,b=kentucky_highearn$afchnge)
+dtkentea <- data.table(dtfkentea)
+dtkentea[,list(count=sum(a>=0, na.rm=TRUE),mean=mean(a, na.rm=TRUE),sd=sd(a,na.rm=TRUE), max= max(a, na.rm=TRUE),min= min(a, na.rm=TRUE),sum=sum(a, na.rm=TRUE)),by=b]
+```
+#
+```{r}
+#########(IIIa)Kentucky
+#####Before & after change in benefits
+#total med. costs@Kentucky with low earners.
+library(data.table)
+dtfkentea <- data.frame(a=kentucky_lowearn$totmed,b=kentucky_lowearn$afchnge)
+dtkentea <- data.table(dtfkentea)
+dtkentea[,list(count=sum(a>=0, na.rm=TRUE),mean=mean(a, na.rm=TRUE),sd=sd(a,na.rm=TRUE), max= max(a, na.rm=TRUE),min= min(a, na.rm=TRUE),sum=sum(a, na.rm=TRUE)),by=b]
+```
+#
+```{r}
+#########(IIIb)Michigan
+#####Before & after change in benefits
+#total med. costs @Michigan with high earners.
+library(data.table)
+dtfmictea <- data.frame(a=michigan_highearn$totmed,b=michigan_highearn$afchnge)
+dtmictea <- data.table(dtfmictea)
+dtmictea[,list(count=sum(a>=0, na.rm=TRUE),mean=mean(a, na.rm=TRUE),sd=sd(a,na.rm=TRUE), max= max(a, na.rm=TRUE),min= min(a, na.rm=TRUE),sum=sum(a, na.rm=TRUE)),by=b]
+```
+#
+```{r}
+#########(IIIb)Michigan
+#####Before & after change in benefits
+# total med. costs@Michigan with low earners.
+library(data.table)
+dtfmictea <- data.frame(a=michigan_lowearn$totmed,b=michigan_lowearn$afchnge)
+dtmictea <- data.table(dtfmictea)
+dtmictea[,list(count=sum(a>=0, na.rm=TRUE),mean=mean(a, na.rm=TRUE),sd=sd(a,na.rm=TRUE), max= max(a, na.rm=TRUE),min= min(a, na.rm=TRUE),sum=sum(a, na.rm=TRUE)),by=b]
+```
+#
+```{r}
+#########(IVa)Kentucky
+#####Before & after change in benefits
+# log total med. costs@Kentucky with high earners.
+library(data.table)
+dtfkentea <- data.frame(a=kentucky_highearn$ltotmed,b=kentucky_highearn$afchnge)
+dtkentea <- data.table(dtfkentea)
+dtkentea[,list(count=sum(a>=0, na.rm=TRUE),mean=mean(a, na.rm=TRUE),sd=sd(a,na.rm=TRUE), max= max(a, na.rm=TRUE),min= min(a, na.rm=TRUE),sum=sum(a, na.rm=TRUE)),by=b]
+```
+#
+```{r}
+#########(IVa)Kentucky
+#####Before & after change in benefits
+#log total med. costs@Kentucky with low earners.
+library(data.table)
+dtfkentea <- data.frame(a=kentucky_lowearn$ltotmed,b=kentucky_lowearn$afchnge)
+dtkentea <- data.table(dtfkentea)
+dtkentea[,list(count=sum(a>=0, na.rm=TRUE),mean=mean(a, na.rm=TRUE),sd=sd(a,na.rm=TRUE), max= max(a, na.rm=TRUE),min= min(a, na.rm=TRUE),sum=sum(a, na.rm=TRUE)),by=b]
+```
+#
+```{r}
+#########(IVb)Michigan
+#####Before & after change in benefits
+#log total med. costs @Michigan with high earners.
+library(data.table)
+dtfmictea <- data.frame(a=michigan_highearn$ltotmed,b=michigan_highearn$afchnge)
+dtmictea <- data.table(dtfmictea)
+dtmictea[,list(count=sum(a>=0, na.rm=TRUE),mean=mean(a, na.rm=TRUE),sd=sd(a,na.rm=TRUE), max= max(a, na.rm=TRUE),min= min(a, na.rm=TRUE),sum=sum(a, na.rm=TRUE)),by=b]
+```
+#
+```{r}
+#########(IVb)Michigan
+#####Before & after change in benefits
+# log total med. costs@Michigan with low earners.
+library(data.table)
+dtfmictea <- data.frame(a=michigan_lowearn$ltotmed,b=michigan_lowearn$afchnge)
+dtmictea <- data.table(dtfmictea)
+dtmictea[,list(count=sum(a>=0, na.rm=TRUE),mean=mean(a, na.rm=TRUE),sd=sd(a,na.rm=TRUE), max= max(a, na.rm=TRUE),min= min(a, na.rm=TRUE),sum=sum(a, na.rm=TRUE)),by=b]
+```
+#####Regression
+######For Kentucky, Main effect & Moderation Effect Model
+```{r}
+reg1K = lm(ldurat ~ highearn + afchnge, data = kentucky.data)
+summary(reg1K)
+reg2K = lm(ldurat ~ highearn + afchnge + highearn*afchnge, data = kentucky.data)
+summary(reg2K)
+```
+###### Check Model Improvement
+###### Conduct the Wald test#1 in Kentucky
+```{r}
+library(aod)
+wald.test(b=coef(reg1K), Sigma=vcov(reg1K), Terms=2:3)
+```
+###### Conduct the Wald test#1 in Kentucky
+```{r}
+library(aod)
+wald.test(b=coef(reg2K), Sigma=vcov(reg2K), Terms=4)
+```
+###### Main effect of ldurat on the relationship between highearn and after change with testing Mutliple Group Means by ANOVA in Kentucky
+```{r}
+anova(aov(kentucky.data$ldurat ~ kentucky.data$highearn+ kentucky.data$afchnge, data=kentucky.data))
+```
+The result indicate that both highearn and afchnge are significant predictors with p<2.2e-16 and  0.001484, respectively.
+
+##### Interaction effect of ldurat on the relationship between highearn and after change with testing Mutliple Group Means by ANOVA in Kentucky.
+```{r}
+anova(aov(kentucky.data$ldurat ~ kentucky.data$highearn+ kentucky.data$afchnge+kentucky.data$highearn* kentucky.data$afchnge, data=kentucky.data))
+```
+Again, we found that highearn, afchnge and the interaction of highearn and afchnge are significant predictor with p<2.2e-16,0.001469 and  0.001077 respectively.
+###################
+###### For Michigan with Main effect & Moderation Effect Model
+```{r}
+reg1M = lm(ldurat ~ highearn + afchnge, data = michigan.data)
+summary(reg1M)
+reg2M = lm(ldurat ~ highearn + afchnge + highearn*afchnge, data = michigan.data)
+summary(reg2M)
+```
+
+###### Check Model Improvement
+###### Conduct the Wald test#1 in Michigan
+```{r}
+library(aod)
+wald.test(b=coef(reg1M), Sigma=vcov(reg1M), Terms=2:3)
+```
+###### Conduct the Wald test#1 in Michigan
+```{r}
+library(aod)
+wald.test(b=coef(reg2M), Sigma=vcov(reg2M), Terms=4)
+```
+###### Main effect of ldurat on the relationship between highearn and after change with testing Mutliple Group Means by ANOVA in Michigan
+```{r}
+anova(aov(michigan.data$ldurat ~ michigan.data$highearn+ michigan.data$afchnge, data=michigan.data))
+```
+The result indicated that highearn is significant predictors with p is 0.001615.
+
+##### Interaction effect of ldurat on the relationship between highearn and after change with testing Mutliple Group Means by ANOVA in Michigan.
+```{r}
+anova(aov(michigan.data$ldurat ~ michigan.data$highearn+ michigan.data$afchnge+michigan.data$highearn* michigan.data$afchnge, data=michigan.data))
+```
+Again, we found that highearn is significant predictor (p is 0.001612).But afchnge  and the interaction of highearn & afchnge are NOT significant.
+######
+###Q4
+###################
+###### Regression#1
+###### For Kentucky, for high & low earnings groups 
+```{r}
+reg3K = lm(ldurat ~afchnge + highearn+ afchnge*highearn+lprewage+lprewage*highearn+male+married +lage+ltotmed+hosp+manuf+construc + head+neck+upextr+trunk+lowback +lowextr+occdis, data = kentucky.data)
+summary(reg3K)
+
+```
+######Regression#2
+######For Michigan, for high & low earnings groups 
+```{r}
+reg3M = lm(ldurat ~afchnge + highearn+ afchnge*highearn+lprewage+lprewage*highearn+male+married +lage+ltotmed+hosp+manuf+construc + head+neck+upextr+trunk+lowback +lowextr+occdis, data = michigan.data)
+summary(reg3M)
+
+```
+
+######Regression#3
+######For Kentucky, for high earnings groups 
+```{r}
+reg4K = lm(ldurat ~afchnge +lprewage+male+married +lage+ltotmed+hosp+manuf+construc + head+neck+upextr+trunk+lowback +lowextr+occdis, data = kentucky_highearn)
+summary(reg4K)
+str(reg4K)
+
+```
+
+######Regression#4
+######For Michigan, for high earnings groups 
+```{r}
+reg4M = lm(ldurat ~afchnge +lprewage+male+married +lage+ltotmed+hosp+manuf+construc + head+neck+upextr+trunk+lowback +lowextr+occdis, data = michigan_highearn)
+summary(reg4M)
+```
+#
+```{r}
+reg3K = lm(ldurat ~afchnge + highearn+ afchnge*highearn+lprewage+lprewage*highearn+male+married +lage+ltotmed+hosp+manuf+construc + head+neck+upextr+trunk+lowback +lowextr+occdis, data = kentucky.data)
+summary(reg3K)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
