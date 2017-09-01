@@ -1,5 +1,5 @@
 ---
-title: "Final Project v.0.1"
+title: "Final Project"
 author: "Irene Cheung"
 date: "June 10, 2017"
 output:
@@ -10,10 +10,9 @@ output:
 ```{r}
 #Set working directory
 getwd()
-setwd("/Users/irene/Desktop/R1")
+setwd("/Users/Desktop/R1")
 getwd()
 ```
-
 ```{r}
 #Load data
 skype<-read.table("skype_student.csv", header=TRUE, sep=",")
@@ -21,41 +20,40 @@ str(skype)
 head(skype)
 names(skype)
 ```
-##### Descriptive statistics on each class
+#### Descriptive statistics on each class
 ```{r}
 library(data.table)
 dtsky <- data.table(skype)
 summary(dtsky)
 str(dtsky)
 ```
-##### Distribution who have provided correct information on Name
+#### Distribution who have provided correct information on Name
 ```{r}
 #(i)Name
 dtsky[,list(count=sum(Rname>=0),mean=mean(Rname),sd=sd(Rname)),by=Iname]
 dtsky[,list(count=sum(Sname>=0),mean=mean(Sname),sd=sd(Sname)),by=Iname]
-
 ```
-##### (ii)Email
+#### (ii) Email
 ```{r}
 dtsky[,list(count=sum(Remail>=0),mean=mean(Remail),sd=sd(Remail)),by=Iemail]
 dtsky[,list(count=sum(Semail>=0),mean=mean(Semail),sd=sd(Semail)),by=Iemail]
 ```
-##### (iii)birthday
+#### (iii) birthday
 ```{r}
 dtsky[,list(count=sum(Rbirth>=0),mean=mean(Rbirth),sd=sd(Rbirth)),by=Ibirth]
 dtsky[,list(count=sum(Sbirth>=0),mean=mean(Sbirth),sd=sd(Sbirth)),by=Ibirth]
 ```
-##### (iv)gender
+##### (iv) gender
 ```{r}
 dtsky[,list(count=sum(Rgender>=0),mean=mean(Rgender),sd=sd(Rgender)),by=Igender]
 dtsky[,list(count=sum(Sgender>=0),mean=mean(Sgender),sd=sd(Sgender)),by=Igender]
 ```
-## (v)nation
+#### (v) nation
 ```{r}
 dtsky[,list(count=sum(Rnation>=0),mean=mean(Rnation),sd=sd(Rnation)),by=Ination]
 dtsky[,list(count=sum(Snation>=0),mean=mean(Snation),sd=sd(Snation)),by=Ination]
 ```
-##### (Vi)city
+#### (vi) city
 ```{r}
 dtsky[,list(count=sum(Rcity>=0),mean=mean(Rcity),sd=sd(Rcity)),by=Icity]
 dtsky[,list(count=sum(Scity>=0),mean=mean(Scity),sd=sd(Scity)),by=Icity]
@@ -75,7 +73,7 @@ dtsky[,list(count=sum(Scell>=0),mean=mean(Scell),sd=sd(Scell)),by=Icell]
 dtsky[,list(count=sum(Rpurp>=0),mean=mean(Rpurp),sd=sd(Rpurp)),by=Ipurp]
 dtsky[,list(count=sum(Spurp>=0),mean=mean(Spurp),sd=sd(Spurp)),by=Ipurp]
 ```
-##### generating dummies
+#### generating dummies
 ```{r}
 dtsky$Dname<-ifelse(dtsky$Iname==1,1,0)
 dtsky$Demail<-ifelse(dtsky$Iemail==1,1,0)
@@ -88,118 +86,97 @@ dtsky$Dcell<-ifelse(dtsky$Icell==1,1,0)
 dtsky$Dpurp<-ifelse(dtsky$Ipurp==1,1,0)
 head(dtsky)
 ```
-
-##### t-test
+#### t-test
 ```{r}
 #Name
 t.test(dtsky$Rname~dtsky$Dname)
 t.test(dtsky$Sname~dtsky$Dname)
 ```
-#
 ```{r}
 #### Correlation coefficients on Name
 cov(dtsky$Rname,dtsky$Dname)
 cov(dtsky$Sname,dtsky$Dname)
 ```
-
 ```{r}
 #Email
 t.test(dtsky$Remail~dtsky$Demail)
 t.test(dtsky$Semail~dtsky$Demail)
 ```
-#
 ```{r}
 #### Correlation coefficients on Email
 cov(dtsky$Remail,dtsky$Demail)
 cov(dtsky$Semail,dtsky$Demail)
 ```
-
-#
 ```{r}
 #Birth
 t.test(dtsky$Rbirth~dtsky$Dbirth)
 t.test(dtsky$Sbirth~dtsky$Dbirth)
 ```
-#
 ```{r}
 #### Correlation coefficients on Birth
 cov(dtsky$Rbirth, dtsky$Dbirth)
 cov(dtsky$Sbirth, dtsky$Dbirth)
 ```
-
 ```{r}
 #Gender
 t.test(dtsky$Rgender~dtsky$Dgender)
 t.test(dtsky$Sgender~dtsky$Dgender)
 ```
-#
 ```{r}
 #### Correlation coefficients on Gender
 cov(dtsky$Rgender,dtsky$Dgender)
 cov(dtsky$Sgender,dtsky$Dgender)
 ```
-
 ```{r}
 #Nation
 t.test(dtsky$Rnation~dtsky$Dnation)
 t.test(dtsky$Snation~dtsky$Dnation)
 ```
-#
 ```{r}
 #### Correlation coefficients on Nation
 cov(dtsky$Rnation,dtsky$Dnation)
 cov(dtsky$Snation,dtsky$Dnation)
 ```
-
 ```{r}
 #City
 t.test(dtsky$Rcity~dtsky$Dcity)
 t.test(dtsky$Scity~dtsky$Dcity)
 ```
-#
 ```{r}
 #### Correlation coefficients on City
 cov(dtsky$Rcity,dtsky$Dcity)
 cov(dtsky$Scity,dtsky$Dcity)
 ```
-
 ```{r}
 #Language
 t.test(dtsky$Rlang~dtsky$Dlang)
 t.test(dtsky$Slang~dtsky$Dlang)
 ```
-#
 ```{r}
 #### Correlation coefficients on Language
 cov(dtsky$Rlang,dtsky$Dlang)
 cov(dtsky$Slang,dtsky$Dlang)
 ```
-
 ```{r}
 #Cellphone
 t.test(dtsky$Rcell~dtsky$Dcell)
 t.test(dtsky$Scell~dtsky$Dcell)
 ```
-#
 ```{r}
 #### Correlation coefficients on Cellphone
 cov(dtsky$Rcell,dtsky$Dcell)
 cov(dtsky$Scell,dtsky$Dcell)
 ```
-
 ```{r}
 #Purpose
 t.test(dtsky$Rpurp~dtsky$Dpurp)
 t.test(dtsky$Spurp~dtsky$Dpurp)
 ```
-
-#
 ```{r}
 #### Correlation coefficients on purpose
 cov(dtsky$Rpurp,dtsky$Dpurp)
 cov(dtsky$Spurp,dtsky$Dpurp)
 ```
-#####################
 ```{r}
 #Load data, skype_student2.csv
 skype2<-read.table("skype_student2.csv", header=TRUE, sep=",")
@@ -207,7 +184,6 @@ str(skype2)
 head(skype2)
 names(skype2)
 ```
-#
 ```{r}
 #Remove expl==p
 skype2_r <- subset(skype2, expl!="P")
@@ -215,7 +191,6 @@ str(skype2_r)
 head(skype2_r)
 names(skype2_r)
 ```
-#
 ```{r}
 #Generate dummy vars
 skype2_r$D<-ifelse(skype2_r$I==1,1,0)
@@ -226,42 +201,39 @@ skype2_r$EX<-ifelse(skype2_r$expr=="Y",1,0)
 head(skype2_r)
 names(skype2_r)
 ```
-######Testing Group Means by t test, It compares the mean for two groups which the user provides the correct and incorrect information on the item
+#### Testing Group Means by t test, It compares the mean for two groups which the user provides the correct and incorrect information on the item
 ```{r}
 t.test(skype2_r$D==1,skype2_r$D==0) 
 sum(skype2_r$D==1)
 sum(skype2_r$D==0)
 ```
-
-#(I)Mandatory and Explanation
+#### (I)Mandatory and Explanation
 ```{r}
 sum(skype2_r$M==0)
 sum(skype2_r$M==1)
-#
 skype2_r$M1_E1=0
 skype2_r$M1_E1=as.numeric(skype2_r$M=="1"&skype2_r$E=="1", 1,0)
 sum(skype2_r$M1_E1==1)
 ```
-#(II) Mandatory and NO Explanation
+#### (II) Mandatory and NO Explanation
 ```{r}
 skype2_r$M1_E0=0
 skype2_r$M1_E0=as.numeric(skype2_r$M=="1"&skype2_r$E=="0", 1,0)
 sum(skype2_r$M1_E0==1)
 ```
-#(III) Voluntary and Explanation
+#### (III) Voluntary and Explanation
 ```{r}
 skype2_r$M0_E1=0
 skype2_r$M0_E1=as.numeric(skype2_r$M=="0"&skype2_r$E=="1", 1,0)
 sum(skype2_r$M0_E1==1)
 ```
-#(IV) Voluntary and No Explanation
+#### (IV) Voluntary and No Explanation
 ```{r}
 skype2_r$M0_E0=0
 skype2_r$M0_E0=as.numeric(skype2_r$M=="0"&skype2_r$E=="0", 1,0)
 sum(skype2_r$M0_E0==1)
 ```
-
-#Mandatory and Explanation that user provides correct info
+#### Mandatory and Explanation that user provides correct info
 ```{r}
 skype2M1E1.data=subset(skype2_r, skype2_r$M1_E1=="1")
 #head(skype2M0E0.data)
@@ -269,44 +241,39 @@ skype2M1E1.data=subset(skype2_r, skype2_r$M1_E1=="1")
 sum(skype2M1E1.data$D==1)
 sum(skype2M1E1.data$D==0)
 ```
-#Mandatory and No Explanation that user provides correct info
+#### Mandatory and No Explanation that user provides correct info
 ```{r}
 skype2M1E0.data=subset(skype2_r, skype2_r$M1_E0=="1")
 sum(skype2M1E0.data$D==1)
 sum(skype2M1E0.data$D==0)
 ```
-##(III) Voluntary and Explanation that user provides correct info
-
+#### (III) Voluntary and Explanation that user provides correct info
 ```{r}
 skype2M0E1.data=subset(skype2_r, skype2_r$M0_E1=="1")
 sum(skype2M0E1.data$D==1)
 sum(skype2M0E1.data$D==0)
 ```
-##(IV) Voluntary and NO Explanation that user provides correct info
+#### (IV) Voluntary and NO Explanation that user provides correct info
 ```{r}
 skype2M0E0.data=subset(skype2_r, skype2_r$M0_E0=="1")
 sum(skype2M0E0.data$D==1)
 sum(skype2M0E0.data$D==0)
 ```
-
 ```{r}
 #explanation vs user provides the correct information
 t.test(skype2_r$D~skype2_r$E)
 cor.test(skype2_r$D, skype2_r$E)
 ```
-#
 ```{r}
 #make all items vs user provides the correct information
 t.test(skype2_r$D~skype2_r$M)
 cor.test(skype2_r$D, skype2_r$M)
 ```
-#
 ```{r}
 #the user has the knowledge on Skype vs user provides the correct information
 t.test(skype2_r$D~skype2_r$P)
 cor.test(skype2_r$D, skype2_r$P)
 ```
-#
 ```{r}
 #the user has the direct or indirect experience of using Skype before vs user provides the correct information
 t.test(skype2_r$D~skype2_r$EX)
@@ -318,8 +285,7 @@ cor.test(skype2_r$D, skype2_r$EX)
 t.test(skype2_r$D~skype2_r$EX)
 cor.test(skype2_r$D, skype2_r$EX)
 ```
-#
-merge
+#### merge
 ```{r}
 #### We need PC information
 names(skype)
@@ -329,23 +295,18 @@ skype3 <- merge(skype2_r, skype_pc, by="ID")
 head(skype3)
 names(skype3)
 ```
-
 ```{r}
 anova(aov(skype3$D ~ skype3$PC1+skype3$PC2+skype3$PC3, data=skype3))
 cor.test(skype3$D, skype3$PC1)
 cor.test(skype3$D, skype3$PC2)
 cor.test(skype3$D, skype3$PC3)
-#
 #head(skype3)
 names(skype3)
 library(corrplot)
 sky0 <-cor(skype3[10:20])
 corrplot(sky0, method="circle")
 ```
-
-#
-
-##### Pooling Model
+#### Pooling Model
 Pooling model ignores the unobserved heterogeneity of users, and ignores possible association within users (groups, firms).
 #### Regress D on R,S,E,M,P,EX,sex, and age.
 #### Using a simple regression model
@@ -359,12 +320,11 @@ summary(lmfit)
 library(coefplot)
 coefplot(lmfit, intercept=FALSE, outerCI=1.96, lwdOuter=1.5,ylab="Rating of Feature",xlab="Association with Overall Satisfaction")
 ```
-##### Check the multicollinearity using the VIF
+#### Check the multicollinearity using the VIF
 ```{r}
 library(car)
 vif(lmfit)
 sqrt(vif(lmfit))>2
-
 ```
 #### Let keep P, EX, gender and age as they are just control variables.
 #### Conduct the BP test
@@ -395,10 +355,9 @@ summary(skype.fd)
 ```{r}
 skype.fe <- plm(D~R+S+E+M+P+EX+gender+age,data=skype2_r,model="within")
 summary(skype.fe)
-#
 fixef(skype.fe)
 ```
-##### random effect model
+#### random effect model
 ```{r}
 skype.re <- plm(D~R+S+E+M+P+EX+gender+age,data=skype2_r,model="random")
 summary(skype.re)
@@ -414,8 +373,7 @@ library(pglm)
 skype.gre<-pglm(D~R+S+E+M+P+EX+gender+age,data=skype2_r,family = binomial,index = 'ID',model="random")
 summary(skype.gre)
 ```
-#############################
-#####Interaction effects
+#### Interaction effects
 #### Main effect model
 ```{r}
 lmfit1=lm(skype2_r$R~skype2_r$S+skype2_r$D)
@@ -442,17 +400,14 @@ wald.test(b=coef(lmfit2), Sigma=vcov(lmfit2), Terms=4)
 anova(aov(skype2_r$R ~ skype2_r$S+skype2_r$D, data=skype2_r))
 ```
 The result indicate that D is significant predictor (p = 3.577e-10 ). 
-##### Main effect and Interaction effect of R on the relationship between D and S with testing Mutliple Group Means by ANOVA.
+#### Main effect and Interaction effect of R on the relationship between D and S with testing Mutliple Group Means by ANOVA.
 ```{r}
 anova(aov(skype2_r$R ~ skype2_r$S* skype2_r$D, data=skype2_r))
 ```
 Again, we found that D is significant predictor (p = 3.634e-10 ).
-#############################
 #### Model Comparision in ANOVA
-#############################
 ```{r}
 anova(aov(skype2_r$R ~ skype2_r$S, data=skype2_r),aov(skype2_r$R ~ skype2_r$S + skype2_r$D, data=skype2_r), aov(skype2_r$R ~ skype2_r$S + skype2_r$D+skype2_r$E, data=skype2_r), aov(skype2_r$R ~ skype2_r$S + skype2_r$D+skype2_r$E +skype2_r$M, data=skype2_r), aov(skype2_r$R ~ skype2_r$S + skype2_r$D+skype2_r$E +skype2_r$M + skype2_r$P, data=skype2_r),aov(skype2_r$R ~ skype2_r$S + skype2_r$D+skype2_r$E +skype2_r$M + skype2_r$P +skype2_r$EX, data=skype2_r), aov(skype2_r$R ~ skype2_r$S + skype2_r$D+skype2_r$E +skype2_r$M + skype2_r$P +skype2_r$EX +skype2_r$gender,data=skype2_r), aov(skype2_r$R ~ skype2_r$S + skype2_r$D+skype2_r$E + skype2_r$M+ skype2_r$P +skype2_r$EX +skype2_r$gender +skype2_r$age ,data=skype2_r) )
 ```
 We found that Model 2 and 5 are are significantly different in overall fit from Model 1. 
-#######################
-###### We do better to have more data to establish the relationship between D and S, R. The possible control variables like Nation, City and preferred language can incorporate into the model.
+#### We do better to have more data to establish the relationship between D and S, R. The possible control variables like Nation, City and preferred language can incorporate into the model.
