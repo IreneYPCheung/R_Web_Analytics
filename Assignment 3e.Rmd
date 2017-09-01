@@ -10,7 +10,7 @@ output:
 ```{r}
 getwd()
 ```
-# Q1
+Q1
 #### Load and subset the data
 ```{r}
 library(foreign)
@@ -34,10 +34,7 @@ summary(hero$sum_expense)
 mean(hero$sum_expense)
 sd(hero$sum_expense)
 ```
-
 #### Draw a histogram
-
-
 ```{r}
 hist(hero$no_purcha_days)
 # add more cells
@@ -47,7 +44,7 @@ hist(hero$no_purcha_days, breaks=100, xlim=c(0,10))
 hist(hero$no_purcha, breaks=100)
 hist(hero$sum_expense, breaks=100, xlim=c(0,1000000))
 ```
-#Q2
+Q2
 #### Find the contribution of high-spenders
 #### Defining high-spenders
 ```{r}
@@ -62,9 +59,7 @@ names(hero)
 hero$is_minnow <- ifelse(hero$sum_expense<100000, c(1), c(0))
 head(hero,5)
 ```
-
-
-##### purch days no total by class
+#### purch days no total by class
 ```{r}
 #whale
 whale.data=subset(hero, hero$is_whale=="1")
@@ -76,7 +71,6 @@ sd(whale.data$no_purcha_days, na.rm=TRUE)
 #dolphin
 dolphin.data=subset(hero, hero$is_dolphin=="1")
 head(dolphin.data)
-
 str(dolphin.data, na.rm=TRUE)
 mean(dolphin.data$no_purcha_days, na.rm=TRUE)
 sd(dolphin.data$no_purcha_days, na.rm=TRUE)
@@ -86,10 +80,7 @@ head(minnow.data)
 str(minnow.data)
 mean(minnow.data$no_purcha_days, na.rm=TRUE)
 sd(minnow.data$no_purcha_days, na.rm=TRUE)
-
 ```
-
-
 #### Percentile
 ```{r}
 hero$p1 <- ifelse(hero$sum_expense>=quantile(hero$sum_expense, c(.99)), c(1), c(0))
@@ -98,17 +89,14 @@ hero$p5 <- ifelse(hero$sum_expense>=quantile(hero$sum_expense, c(.95)), c(1), c(
 head(hero)
 hero$p10 <- ifelse(hero$sum_expense>=quantile(hero$sum_expense, c(.90)), c(1), c(0))
 head(hero,5)
-
 ```
-##### we need p1,p5,p10 date
+#### we need p1,p5,p10 date
 ```{r}
 head(hero)
 var2 <- c("user_no","p1", "p5", "p10")
 pdata<- hero[var2]
 head(pdata)
 ```
-
-
 #### Quantile
 ```{r}
 quantile(hero$sum_expense, c(.99))
@@ -131,7 +119,6 @@ dt[,list(count=sum(a>=0),mean=mean(a),sd=sd(a), sum=sum(a)),by=b]
 dtf <- data.frame(a=hero$sum_expense,b=hero$is_minnow)
 dt <- data.table(dtf)
 dt[,list(count=sum(a>=0),mean=mean(a),sd=sd(a), sum=sum(a)),by=b]
-
 ```
 #### Percentile 
 ```{r}
@@ -147,7 +134,6 @@ dt[,list(count=sum(a>=0),mean=mean(a),sd=sd(a), sum=sum(a)),by=b]
 hero$class <- ifelse(hero$sum_expense>=1000000, "whale", "dolphin")
 hero$class <- ifelse(hero$sum_expense<100000, "minnow", hero$class)
 ```
-
 #### Generating descriptive statsitics by class
 ```{r}
 dtf <- data.frame(a=hero$sum_expense,b=hero$class)
@@ -198,11 +184,11 @@ dt[,list(count1=sum(a>=0),mean1=mean(c),count2=sum(d>=0,na.rm=TRUE),mean2=mean(d
 mean(hero_history$sum_price_rev1,na.rm=TRUE)
 count=sum(hero_history$sum_price_rev1>=0, na.rm=TRUE)
 count
-
+#
 mean(hero_history$sum_price_rev2, na.rm=TRUE)
 count=sum(hero_history$sum_price_rev2>=0, na.rm=TRUE)
 count
-
+#
 mean(hero_history$sum_price_rev3, na.rm=TRUE)
 count=sum(hero_history$sum_price_rev3>=0, na.rm=TRUE)
 count
@@ -212,7 +198,6 @@ count
 usage_connection_daily<-read.csv("usage_connection_daily.csv")
 hero_connection <- subset(usage_connection_daily, app_key==80862143) 
 ```
-
 #### We need the install date and the first purchase date
 ```{r}
 head(hero,5)
@@ -236,13 +221,12 @@ data_m$date<-as.Date(as.character(data_m$report_date),"%Y%m%d")
 head(data_m)
 str(data_m)
 ```
-####
 ```{r}
 data_m_s <- subset(data_m, as.Date(data_m$date)< as.Date(data_m$purch_date1))
 head(data_m_s)
 str(data_m_s)
 ```
-#Q2
+Q2
 #### no_connection_before_purch
 ```{r}
 data_m_s$report_value<- na.omit(data_m_s$report_value)
@@ -292,30 +276,24 @@ sd(data_m_s$connection_mean_before_purch)
 ```{r}
 data_m_s$report_value<-na.omit(data_m_s$report_value)
 data_m_s$user_no<-na.omit(data_m_s$user_no)
-
 data_m_s$connection_var_before_purch <- ave(data_m_s$report_value, data_m_s$user_no, FUN = var)
-
 head(data_m_s)
 str(data_m_s)
 summary(data_m_s)
 mean(data_m_s$connection_var_before_purch,  na.rm=TRUE)
 sd(data_m_s$connection_var_before_purch,  na.rm=TRUE)
-
-
 ```
-#Generate max connection value
+#### Generate max connection value
 ```{r}
 library(data.table)
 dtf <- data.frame(data_m_s$report_value,data_m_s$user_no)
 dt <- data.table(dtf)
 dt[,list(max=max(data_m_s$report_value)),by=data_m_s$user_no]
 data_m_s$max<-dt
-
 head(data_m_s)
 str(data_m_s)
 summary(data_m_s)
 ```
-
 #### connection_increase_before_purch
 #### using a user defined function
 ```{r}
@@ -356,7 +334,6 @@ head(data_m_s)
 ```{r}
 connection_increase_before_purch <- by(data_m_s,data_m_s$user_no,get.inc)
 connection_increase_before_purch[3]
-
 ```
 #### get unique value (remove the duplicated users)
 ```{r}
@@ -376,11 +353,8 @@ summary(data_m_s_u)
 str(data_m_s_u)
 mean(data_m_s_u$connection_increase_before_purch,  na.rm=TRUE)
 sd(data_m_s_u$connection_increase_before_purch,  na.rm=TRUE)
-
 plot(data_m_s_u$connection_increase_before_purch)
-
 ```
-
 ####  get descriptive statistics
 ```{r}
 # need a review on the connection data
@@ -392,7 +366,7 @@ M<-cor(data_m_s_u[,9:14,17 ], use="complete.obs")
 corrplot(M, method="number")
 corrplot(M, method="circle")
 ```
-##### Positive correlations are displayed in blue and negative correlations in red color. Color intensity and the size of the circle are proportional to the correlation coefficients. 
+#### Positive correlations are displayed in blue and negative correlations in red color. Color intensity and the size of the circle are proportional to the correlation coefficients. 
 
 #### generating usage variables (session)
 #### choose 'hero' from "usage_session_daily" 
@@ -407,7 +381,7 @@ vars <- c("user_no", "install_date", "purch_date1")
 #data<- hero[vars]
 head(data)
 ```
-##### merge 
+#### merge 
 ```{r}
 data_m_ses<- merge(hero_session, data, by="user_no")
 data_m_ses<- na.omit(data_m_ses)
@@ -417,21 +391,18 @@ head(data_m_ses)
 str(data_m_ses)
 summary(data_m_ses)
 ```
-####
 ```{r}
 data_m_ses$date<-as.Date(as.character(data_m_ses$report_date),"%Y%m%d")
 head(data_m_ses)
 str(data_m_ses)
 ```
-
-##### subset data before puchase
+#### subset data before puchase
 ```{r}
 data_m_ses_s <- subset(data_m_ses, as.Date(data_m_ses$date)< as.Date(data_m_ses$purch_date1))
 head(data_m_ses_s)
 str(data_m_ses_s)
 ```
-
-###### no_usage_before_purch
+#### no_usage_before_purch
 ```{r}
 data_m_ses_s$report_value<- na.omit(data_m_ses_s$report_value)
 data_m_ses_s$user_no<-na.omit(data_m_ses_s$user_no)
@@ -441,8 +412,7 @@ summary(data_m_ses_s)
 mean(data_m_ses_s$no_usage_before_purch)
 sd(data_m_ses_s$no_usage_before_purch)
 ```
-
-###### usage_total_before_purch
+#### usage_total_before_purch
 ```{r}
 data_m_ses_s$usage_total_before_purch <- ave(data_m_ses_s$report_value, data_m_ses_s$user_no, FUN = sum)
 head(data_m_ses_s)
@@ -450,13 +420,13 @@ summary(data_m_ses_s)
 mean(data_m_ses_s$usage_total_before_purch)
 sd(data_m_ses_s$usage_total_before_purch)
 ```
-##### freq_usage_before_purch
+#### freq_usage_before_purch
 ```{r}
 data_m_ses_s$time_to_purch  <- as.Date(as.character.Date(data_m_ses_s$purch_date1))-
                   as.Date(as.character.Date(data_m_ses_s$install_date))+1
 head(data_m_ses_s)
 ```
-##Cont'
+#### Cont'
 ```{r}
 data_m_ses_s$session_mean_before_purch <- ave(data_m_ses_s$report_value, data_m_ses_s$user_no, FUN = mean)
 head(data_m_ses_s)
@@ -467,8 +437,6 @@ summary(data_m_ses_s)
 mean(data_m_ses_s$freq_usage_before_purch)
 sd(data_m_ses_s$freq_usage_before_purch)
 ```
-
-
 #### session_mean_before_purch
 ```{r}
 data_m_ses_s$session_mean_before_purch <- ave(data_m_ses_s$report_value, data_m_ses_s$user_no, FUN = mean)
@@ -485,8 +453,7 @@ summary(data_m_ses_s)
 mean(data_m_ses_s$session_var_before_purch, na.rm=TRUE)
 sd(data_m_ses_s$session_var_before_purch, na.rm=TRUE)
 ```
-
-##### usage_increase_before_purch
+#### usage_increase_before_purch
 #### using a user defined function
 ```{r}
 # function for usage_increase_before_purch
@@ -514,8 +481,7 @@ head(data_m_ses_s)
 usage_increase_before_purch <- by(data_m_ses_s,data_m_ses_s$user_no,get.inc_ses)
 usage_increase_before_purch[3]
 ```
-
-### get unique value (remove the duplicated users)
+#### get unique value (remove the duplicated users)
 ```{r}
 head(data_m_ses_s)
 data_m_ses_s_u<-subset(data_m_ses_s, !duplicated(user_no)) 
@@ -525,14 +491,11 @@ head(data_m_ses_s_u)
 ```{r}
 data_m_ses_s_u$usage_increase_before_purch<-by(data_m_ses_s,data_m_ses_s$user_no,get.inc_ses)
 head(data_m_ses_s_u)
-
 summary(data_m_ses_s_u)
 mean(data_m_ses_s_u$usage_increase_before_purch)
 sd(data_m_ses_s_u$usage_increase_before_purch)
-
-
 ```
-##### get descriptive statistics
+#### get descriptive statistics
 #### need a review on the session data
 ```{r}
 summary(data_m_ses_s_u)
@@ -542,12 +505,10 @@ library(gplots)
 M1<-cor(data_m_ses_s_u[,9:14,17], use="complete.obs")
 corrplot(M1, method="number")
 corrplot(M1, method="circle")
-
 ```
+#### Positive correlations are displayed in blue and negative correlations in red color. Color intensity and the size of the circle are proportional to the correlation coefficients. 
 
-##### Positive correlations are displayed in blue and negative correlations in red color. Color intensity and the size of the circle are proportional to the correlation coefficients. 
-################################################
-#Q3
+Q3
 ```{r}
 #### We need is_dolphin information
 names(hero)
@@ -564,7 +525,6 @@ var1 <- c("user_no","no_connection_before_purch", "connection_total_before_purch
 data_m_s_u_use <- data_m_s_u[var1]
 head(data_m_s_u_use,5)
 ```
-#
 ```{r}
 #### merge 
 #names (hero_history)
@@ -584,8 +544,8 @@ head(final_hero3)
 str(final_hero3)
 summary(final_hero3)
 ```
-##Use the rpart function to build a classification tree model
-#recursive partitioning A
+#### Use the rpart function to build a classification tree model
+#### recursive partitioning A
 ```{r}
 #names(final_hero3)
 library(rpart)
@@ -607,29 +567,29 @@ table(final_hero3$is_dolphin, predictions)
 library(caret)
 confusionMatrix(table(final_hero3$is_dolphin, predictions))
 ```
-#Min cross-validation error of the classification tree model
+#### Min cross-validation error of the classification tree model
 ```{r}
 min(is_dolphin.rpart$cptable[,"xerror"])
 ```
-#Locate min cross-validation error
+#### Locate min cross-validation error
 ```{r}
 which.min(is_dolphin.rpart$cptable[,"xerror"])
 ```
-#Get cost complexity parameter of the record with min cross-validation error
+#### Get cost complexity parameter of the record with min cross-validation error
 ```{r}
 is_dolphin.cp= is_dolphin.rpart$cptable[2,"CP"]
 is_dolphin.cp
 ```
-#Prune the tree by setting CP parameter to CP value
+#### Prune the tree by setting CP parameter to CP value
 ```{r}
 prune.tree= prune(is_dolphin.rpart, cp=is_dolphin.cp)
 ```
-#
+
 ```{r}
 plot(prune.tree, margin(0.1))
 text(prune.tree, all=TRUE, use.n=TRUE)
 ```
-##recursive partitioning B--connection info
+#### recursive partitioning B--connection info
 ```{r}
 #names(final_hero3)
 library(rpart)
@@ -649,32 +609,27 @@ table(final_hero3$is_dolphin, predictions)
 library(caret)
 confusionMatrix(table(final_hero3$is_dolphin, predictions))
 ```
-
-#Min cross-validation error of the classification tree model
+#### Min cross-validation error of the classification tree model
 ```{r}
 min(is_dolphin.rpart$cptable[,"xerror"])
 ```
-#Locate min cross-validation error
+#### Locate min cross-validation error
 ```{r}
 which.min(is_dolphin.rpart$cptable[,"xerror"])
 ```
-#
 ```{r}
 #Get cost complexity parameter of the record with min cross-validation error
 is_dolphin.cp= is_dolphin.rpart$cptable[2,"CP"]
 is_dolphin.cp
 ```
-#Prune the tree by setting CP parameter to CP value
+#### Prune the tree by setting CP parameter to CP value
 ```{r}
 prune.tree= prune(is_dolphin.rpart, cp=is_dolphin.cp)
 ```
-#
 ```{r}
 plot(prune.tree, margin(0.1))
 text(prune.tree, all=TRUE, use.n=TRUE)
 ```
-
-
 ```{r}
 names(final_hero3)
 library(party)
@@ -685,15 +640,13 @@ library(foreign)
 # confirm Data
 names(final_hero3)
 ```
-
-#new
+#### new
 ```{r}
 ##########################################################
 #   
 # Conditional Inference Tree (final_hero3)
 #
 ##########################################################
-
 # Conditional Tree for M1A
 # sum expense & connection info
 M1A<-final_hero3[,c(7,18:20,22:25)] 
@@ -705,7 +658,6 @@ png(file="C:/Users/Irene/Desktop/R1/M1A_level.png",width=3500,height=800)
 plot(fit, main="Conditional Inference Tree for M1-A")
 dev.off()
 ```
-#
 ```{r}
 # Conditional Tree for M1-B
 #report_date,no purcha days and no purcha
@@ -718,12 +670,10 @@ png(file="C:/Users/Irene/Desktop/R1/M1B_level.png",width=3500,height=800)
 plot(fit, main="Conditional Inference Tree for M1-B")
 dev.off()
 ```
-#
 ```{r}
 # Conditional Tree for M1-C
 #p1, p5 & p10
 M1C<-final_hero3[,c(11:13)] # 
-
 user_class<-ordered(final_hero3[,c(14)],levels = c("minnow", "dolphin", "whale"))
 fit <- ctree(user_class~., data=M1C)
 fit
@@ -732,12 +682,10 @@ png(file="C:/Users/Irene/Desktop/R1/M1C_level.png",width=3500,height=800)
 plot(fit, main="Conditional Inference Tree for M1-C")
 dev.off()
 ```
-#
 ```{r}
 # Conditional Tree for M1-D
 #report date & report value, GOOD
 M1D<-final_hero3[,c(17:18)] 
-
 user_class<-ordered(final_hero3[,c(14)],levels = c("minnow", "dolphin", "whale"))
 fit <- ctree(user_class~., data=M1D)
 fit
@@ -746,7 +694,7 @@ png(file="C:/Users/Irene/Desktop/R1/M1D_level.png",width=3500,height=800)
 plot(fit, main="Conditional Inference Tree for M1-D")
 dev.off()
 ```
-#new
+#### new
 ```{r}
 ##########################################################
 #
@@ -764,20 +712,20 @@ predict.logit<-predict.glm(logit, newdata=M1A_logit, type="response", se.fit=FAL
 pred<-prediction(predict.logit, M1A_logit$is_dolphin, label.ordering = NULL)
 M1A_logit$prob <- predict.logit
 ```
-#
+
 ```{r}
 # ROC curve
 tpr_fpr.perf <- performance(pred, measure="tpr", x.measure="fpr")
 plot(tpr_fpr.perf)
 abline(a=0, b= 1)
 ```
-#
+
 ```{r}
 # AUC 
 auc.perf = performance(pred, measure = "auc")
 auc.perf@y.values
 ```
-#
+
 ```{r}
 # Optimal Cutoff Point
 opt.cut = function(perf, pred){
@@ -790,10 +738,9 @@ opt.cut = function(perf, pred){
 }
 print(opt.cut(tpr_fpr.perf, pred))
 ```
-#M1B
+#### M1B
 ```{r}
 # Logit for M1B (report date and report value)
-
 names(final_hero3)
 summary(final_hero3)
 M1B_logit<-final_hero3[,c(9, 17:18)] 
@@ -802,7 +749,6 @@ summary(logit)
 predict.logit<-predict.glm(logit, newdata=M1B_logit, type="response", se.fit=FALSE) 
 pred<-prediction(predict.logit, M1B_logit$is_dolphin, label.ordering = NULL)
 M1B_logit$prob <- predict.logit
-
 ```
 #### ROC curve for M1B (report date and report value)
 ```{r}
@@ -810,7 +756,7 @@ tpr_fpr.perf <- performance(pred, measure="tpr", x.measure="fpr")
 plot(tpr_fpr.perf)
 abline(a=0, b= 1)
 ```
-##### AUC for M1B (report date and report value)
+#### AUC for M1B (report date and report value)
 ```{r}
 auc.perf = performance(pred, measure = "auc")
 auc.perf@y.values
@@ -827,9 +773,8 @@ opt.cut = function(perf, pred){
     }, perf@x.values, perf@y.values, pred@cutoffs)
 }
 print(opt.cut(tpr_fpr.perf, pred))
-
 ```
-##M1C
+#### M1C
 ```{r}
 # Logit for M1C (p1,p2,p3)
 names(final_hero3)
@@ -840,21 +785,18 @@ summary(logit)
 predict.logit<-predict.glm(logit, newdata=M1C_logit, type="response", se.fit=FALSE) 
 pred<-prediction(predict.logit, M1C_logit$is_dolphin, label.ordering = NULL)
 M1C_logit$prob <- predict.logit
-
 ```
-##### ROC curve for M1C (p1,p5,p10)
+#### ROC curve for M1C (p1,p5,p10)
 ```{r}
 tpr_fpr.perf <- performance(pred, measure="tpr", x.measure="fpr")
 plot(tpr_fpr.perf)
 abline(a=0, b= 1)
 ```
-#
 ```{r}
 # AUC 
 auc.perf = performance(pred, measure = "auc")
 auc.perf@y.values
 ```
-#
 ```{r}
 # Optimal Cutoff Point
 opt.cut = function(perf, pred){
@@ -866,6 +808,4 @@ opt.cut = function(perf, pred){
     }, perf@x.values, perf@y.values, pred@cutoffs)
 }
 print(opt.cut(tpr_fpr.perf, pred))
-
 ```
-
