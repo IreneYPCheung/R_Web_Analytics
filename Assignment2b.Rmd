@@ -288,6 +288,7 @@ t.test(eum_mer$relv[eum_mer$D==1],eum_mer$relv[eum_mer$D==0])
 ```{r}
 t.test(eum_mer_r$relv[eum_mer_r$D==1],eum_mer_r$relv[eum_mer_r$D==0]) 
 ```
+
 Q2 and Q3
 #### Generate other dummy vars# 
 ```{r}
@@ -365,6 +366,7 @@ library(pglm)
 eum_mer_r.gre<-pglm(D~sen+relv+K+E+itr+ip+sex+age,data=eum_mer_r,family = binomial,index = 'ID',model="random")
 summary(eum_mer_r.gre)
 ```
+
 Q4
 #### Main effect model
 ```{r}
@@ -404,5 +406,7 @@ anova(aov(eum_mer_r$relv ~ eum_mer_r$sen, data=eum_mer_r),aov(eum_mer_r$relv ~ e
 
 ```
 We found that Model 2 and 5 are are significantly different in overall fit from Model 1. 
+
 Q5
+
 We do better to have more data to establish the relationship between D and sen, relv. The possible control variables like citizen, born of country, race and skin colour can incorporate into the model.
