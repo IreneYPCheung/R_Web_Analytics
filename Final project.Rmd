@@ -43,7 +43,7 @@ dtsky[,list(count=sum(Semail>=0),mean=mean(Semail),sd=sd(Semail)),by=Iemail]
 dtsky[,list(count=sum(Rbirth>=0),mean=mean(Rbirth),sd=sd(Rbirth)),by=Ibirth]
 dtsky[,list(count=sum(Sbirth>=0),mean=mean(Sbirth),sd=sd(Sbirth)),by=Ibirth]
 ```
-##### (iv) gender
+#### (iv) gender
 ```{r}
 dtsky[,list(count=sum(Rgender>=0),mean=mean(Rgender),sd=sd(Rgender)),by=Igender]
 dtsky[,list(count=sum(Sgender>=0),mean=mean(Sgender),sd=sd(Sgender)),by=Igender]
