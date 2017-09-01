@@ -6,7 +6,7 @@ output:
   html_document: default
   pdf_document: default
 ---
-### Q1
+Q1
 ```{r}
 getwd()
 eum_ass<-read.csv("eum_assignment.csv")
@@ -21,7 +21,7 @@ head(eum_sen,5)
 str(eum_sen)
 summary(eum_sen)
 ```
-### Merge
+#### Merge
 ```{r}
 eum_mer <- merge(eum_ass, eum_sen, by="item")
 head(eum_mer,5)
@@ -41,7 +41,7 @@ eum_mer$prov[eum_mer$prov==2] <- "Not provided correct information"
 eum_mer$prov[eum_mer$prov==3] <- "Provided incorrect information"
 ```
 
-### Distribution who have provided correct information 
+#### Distribution who have provided correct information 
 ```{r}
 table.prov=table(eum_mer$prov)
 table.prov
@@ -50,7 +50,7 @@ table.prov_percent<- paste(round(table.prov_prop*100,digits=1),"%",sep="")
 table.prov_percent
 pie(table.prov)
 ```
-##Descriptive statistics and visualization plot
+#### Descriptive statistics and visualization plot
 #### No.of observations that have knowledge on the site regarding how it works
 ```{r}
 library(data.table)
@@ -78,7 +78,7 @@ hist(eum_mer$itr,
      las=1, 
      breaks=5)
 ```
-### No.of observations about Internet privacy concern (Likert scale, 7=high , 1=low)
+#### No.of observations about Internet privacy concern (Likert scale, 7=high , 1=low)
 ```{r}
 table.ip=table(eum_mer$ip)
 table.ip
@@ -92,7 +92,7 @@ hist(eum_mer$ip,
      las=1, 
      breaks=5)
 ```
-### Age distribution 
+#### Age distribution 
 ```{r}
 table.age=table(eum_mer$age)
 table.age
@@ -106,20 +106,19 @@ hist(eum_mer$age,
      las=1, 
      breaks=5)
 ```
-### Gender distribution 
+#### Gender distribution 
 ```{r}
 table.sex=table(eum_mer$sex)
 table.sex
 pie(table.sex)
 ```
-### Info provided distribution 
+#### Info provided distribution 
 ```{r}
 table.prov=table(eum_mer$prov)
 table.prov
 pie(table.prov)
 ```
-
-#Sensitivity of informations 
+#### Sensitivity of informations 
 ```{r}
 table.sen=table(eum_mer$sen)
 table.sen
@@ -133,7 +132,7 @@ hist(eum_mer$sen,
      las=1, 
      breaks=5)
 ```
-#Relevant of informations 
+#### Relevant of informations 
 ```{r}
 table.relv=table(eum_mer$relv)
 table.relv
@@ -147,9 +146,8 @@ hist(eum_mer$relv,
      las=1, 
      breaks=5)
 ```
-##################
-### In order to analysis the data, we excluded the info which is not provided.
-### Remove prov==p
+#### In order to analysis the data, we excluded the info which is not provided.
+#### Remove prov==p
 ```{r}
 eum_mer_r<- subset(eum_mer, eum_mer$prov!="Not provided correct information")
 str(eum_mer_r)
@@ -157,22 +155,21 @@ head(eum_mer_r)
 sum(eum_mer_r$prov=="Not provided correct information")
 sum(eum_mer_r$prov=="Not provided correct information")
 ```
-
-#Descriptive statistics and visualization plot after remove info which is not provided.
-### No.of observations that have knowledge on the site regarding how it works
+#### Descriptive statistics and visualization plot after remove info which is not provided.
+#### No.of observations that have knowledge on the site regarding how it works
 ```{r}
 library(data.table)
 table.know_r=table(eum_mer_r$know)
 table.know_r
 pie(table.know_r)
 ```
-### No.of observations that has expereince of online matchmaking after removed 
+#### No.of observations that has expereince of online matchmaking after removed 
 ```{r}
 table.expr_r=table(eum_mer_r$expr)
 table.expr_r
 pie(table.expr_r)
 ```
-### No.of observations about Internet Trust after removed 
+#### No.of observations about Internet Trust after removed 
 ```{r}
 table.itr_r=table(eum_mer_r$itr)
 table.itr_r
@@ -186,7 +183,7 @@ hist(eum_mer_r$itr,
      las=1, 
      breaks=5)
 ```
-### No.of observations about Internet privacy concern (Likert scale, 7=high , 1=low) after removed 
+#### No.of observations about Internet privacy concern (Likert scale, 7=high , 1=low) after removed 
 ```{r}
 table.ip_r=table(eum_mer_r$ip)
 table.ip_r
@@ -200,7 +197,7 @@ hist(eum_mer_r$ip,
      las=1, 
      breaks=5)
 ```
-### Age distribution after removed 
+#### Age distribution after removed 
 ```{r}
 table.age_r=table(eum_mer_r$age)
 table.age_r
@@ -214,19 +211,19 @@ hist(eum_mer_r$age,
      las=1, 
      breaks=5)
 ```
-### Gender distribution after removed 
+#### Gender distribution after removed 
 ```{r}
 table.sex_r=table(eum_mer_r$sex)
 table.sex_r
 pie(table.sex_r)
 ```
-### Info provided distribution after removed 
+#### Info provided distribution after removed 
 ```{r}
 table.prov_r=table(eum_mer_r$prov)
 table.prov_r
 pie(table.prov_r)
 ```
-### Sensitivity of informations after removed 
+#### Sensitivity of informations after removed 
 ```{r}
 table.sen_r=table(eum_mer_r$sen)
 table.sen_r
@@ -240,7 +237,7 @@ hist(eum_mer_r$sen,
      las=1, 
      breaks=5)
 ```
-### Relevant of informations after removed 
+#### Relevant of informations after removed 
 ```{r}
 table.relv_r=table(eum_mer_r$relv)
 table.relv_r
@@ -254,51 +251,42 @@ hist(eum_mer_r$relv,
      las=1, 
      breaks=5)
 ```
-#######
-#Correlation coefficients
+#### Correlation coefficients
 ```{r}
 cov(eum_mer_r$D,eum_mer_r$sen)
 cov(eum_mer_r$D,eum_mer_r$relv)
 ```
-################################
-#eum_mer$prov[eum_mer$prov==1] <- "Provided correct information"
-#eum_mer$prov[eum_mer$prov==2] <- "Not provided correct information"
-#eum_mer$prov[eum_mer$prov==3] <- "Provided incorrect information"
-#############################
-### Generate dummy vars for all 6090 observations 
+#### Generate dummy vars for all 6090 observations 
 ```{r}
 eum_mer$D<-ifelse(eum_mer$prov=="Provided correct information",1,0)
 sum(eum_mer$D==1)
 sum(eum_mer$D==0)
 ```
-### Generate dummy vars for removed not provided info, 5200 observations 
+#### Generate dummy vars for removed not provided info, 5200 observations 
 ```{r}
 eum_mer_r$D<-ifelse(eum_mer_r$prov=="Provided correct information",1,0)
 sum(eum_mer_r$D==1)
 sum(eum_mer_r$D==0)
 ```
-### Sensitivity for all 6090 observations
+#### Sensitivity for all 6090 observations
 ```{r}
 t.test(eum_mer$sen[eum_mer$D==1],eum_mer$sen[eum_mer$D==0])
 ```
 
-### Sensitivity for removed not provided info, 5200 observations 
+#### Sensitivity for removed not provided info, 5200 observations 
 ```{r}
 t.test(eum_mer_r$sen[eum_mer_r$D==1],eum_mer_r$sen[eum_mer_r$D==0]) 
 ```
-### Relevant for all observations 6090
+#### Relevant for all observations 6090
 ```{r}
 t.test(eum_mer$relv[eum_mer$D==1],eum_mer$relv[eum_mer$D==0]) 
 ```
-### Relevant for removed "not provide"" observations 
+#### Relevant for removed "not provide"" observations 
 ```{r}
 t.test(eum_mer_r$relv[eum_mer_r$D==1],eum_mer_r$relv[eum_mer_r$D==0]) 
 ```
-
-###########
-#Q2+Q3
-###########
-#Generate other dummy vars# 
+Q2+Q3
+#### Generate other dummy vars# 
 ```{r}
 eum_mer_r$K<-ifelse(eum_mer_r$know=="Y",1,0)
 eum_mer_r$E<-ifelse(eum_mer_r$expr=="Y",1,0)
@@ -306,11 +294,10 @@ head(eum_mer_r)
 str(eum_mer_r)
 summary(eum_mer_r)
 ```
-#############################
-#Pooling Model
+#### Pooling Model
 Pooling model ignores the unobserved heterogeneity of users, and ignores possible association within users (groups, firms).
-#Regress D on sen,relv, K, E, itr, ip, sex, and age.
-#Using a simple regression model
+#### Regress D on sen,relv, K, E, itr, ip, sex, and age.
+#### Using a simple regression model
 ```{r}
 lmfit<-lm(eum_mer_r$D~eum_mer_r$sen+eum_mer_r$relv+eum_mer_r$K+eum_mer_r$E+eum_mer_r$itr+eum_mer_r$ip+eum_mer_r$sex+eum_mer_r$age)
 summary(lmfit)
@@ -322,64 +309,60 @@ Apart from internet privacy concern and age, other six features are identified a
 library(coefplot)
 coefplot(lmfit, intercept=FALSE, outerCI=1.96, lwdOuter=1.5,ylab="Rating of Feature",xlab="Association with Overall Satisfaction")
 ```
-#Check the multicollinearity using the VIF
+#### Check the multicollinearity using the VIF
 ```{r}
 library(car)
 vif(lmfit)
 sqrt(vif(lmfit))>2
 ```
-#Let keep ip and age as they are just control variables.
-#Conduct the BP test
+#### Let keep ip and age as they are just control variables.
+#### Conduct the BP test
 ```{r}
 library(lmtest)
 bptest(lmfit)
 ```
-#Employ robust standard errors
+#### Employ robust standard errors
 ```{r}
 library(rms)
 olsfit=ols(D~sen+relv+K+E+itr+ip+sex+age, data=eum_mer_r, x=TRUE, y=TRUE)
 robcov(olsfit)
 ```
-#Use a pooling model
+#### Use a pooling model
 ```{r}
 library(plm)
 eum_mer_r.pl <- plm(D~sen+relv+K+E+itr+ip+sex+age,data=eum_mer_r,model="pooling")
 summary(eum_mer_r.pl)
 ```
-
 To control for the unobserved heterogeneity, we can take the first difference (period-to-period change) and use it for the analysis.
 #Use a first-difference model
 ```{r}
 eum_mer_r.fd <- plm(D~sen+relv+K+E+itr+ip+sex+age,data=eum_mer_r,model="fd")
 summary(eum_mer_r.fd)
 ```
-# Apply panel models 
-# Fixed effect model
+#### Apply panel models 
+#### Fixed effect model
 ```{r}
 eum_mer_r.fe <- plm(D~sen+relv+K+E+itr+ip+sex+age,data=eum_mer_r,model="within")
 summary(eum_mer_r.fe)
-#
 fixef(eum_mer_r.fe)
 ```
-# random effect model
+#### random effect model
 ```{r}
 eum_mer_r.re <- plm(D~sen+relv+K+E+itr+ip+sex+age,data=eum_mer_r,model="random")
 summary(eum_mer_r.re)
 ```
-# Conduct hausman test
+#### Conduct hausman test
 ```{r}
 phtest(eum_mer_r.fe, eum_mer_r.re)
 ```
-#Using the panel glm model
+#### Using the panel glm model
 ```{r}
 #install.packages("pglm")
 library(pglm)
 eum_mer_r.gre<-pglm(D~sen+relv+K+E+itr+ip+sex+age,data=eum_mer_r,family = binomial,index = 'ID',model="random")
 summary(eum_mer_r.gre)
 ```
-###########
-#Q4
-###########
+Q4
 #### Main effect model
 ```{r}
 lmfit1=lm(eum_mer_r$relv~eum_mer_r$sen+eum_mer_r$D)
@@ -390,21 +373,18 @@ summary(lmfit1)
 lmfit2=lm(eum_mer_r$relv~eum_mer_r$sen+eum_mer_r$D+eum_mer_r$sen*eum_mer_r$D)
 summary(lmfit2)
 ```
-# Check Model Improvement
-# Conduct the Wald test#1
+#### Check Model Improvement
+#### Conduct the Wald test#1
 ```{r}
 library(aod)
 wald.test(b=coef(lmfit1), Sigma=vcov(lmfit1), Terms=3)
 ```
-
-# Conduct the Wald test#2
+#### Conduct the Wald test#2
 ```{r}
 library(aod)
 wald.test(b=coef(lmfit2), Sigma=vcov(lmfit2), Terms=4)
 ```
-###########
-#Q5
-###########
-##### We do better to have more data to establish the relationship between D and sen, relv. The possible control variables like citizen, born of country, race and skin colour can incorporate into the model.
+Q5
+#### We do better to have more data to establish the relationship between D and sen, relv. The possible control variables like citizen, born of country, race and skin colour can incorporate into the model.
 
 
