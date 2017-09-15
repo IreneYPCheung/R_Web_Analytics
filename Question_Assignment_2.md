@@ -1,3 +1,4 @@
+### Assignment 2
 The data is from a well-known online firm, which provides a matchmaking service for dating. To become a member of it, you are expected to input your physical characteristics such as height, weight, picture, etc., and background information such as marital status, education level, monthly income, wealth level, etc. There is a total of 30 items that you need to fill in. But you can choose just a few of them to provide your information, and strategically, you can provide wrong information as well. 
 
 The site investigated its 203 members’ information provision practice (file name= “eum_assignment.csv”).  There are nine variables in the data.  
