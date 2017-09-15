@@ -1,3 +1,4 @@
+### Assignment 1
 #### Mobile channel non-adopter data: OnlineMember, OnlineOrder, OnlineBasketDiscount 
 #### Mobile channel adopters purchase products either through the PC or Mobile channel, while non-adopters purchase only through the PC channel. 
 First, we want to compare demographics of adopters and non-adopters. Note that there are business users in the datasets and their information on gender and age is not available. 
